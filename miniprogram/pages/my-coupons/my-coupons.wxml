@@ -1,0 +1,27 @@
+<view class="page fade-in">
+  <view class="header-tabs">
+    <view class="header-tab {{statusTab === 'available' ? 'active' : ''}}" data-status="available" bindtap="onTabChange" hover-class="hover">可用</view>
+    <view class="header-tab {{statusTab === 'used' ? 'active' : ''}}" data-status="used" bindtap="onTabChange" hover-class="hover">已使用</view>
+    <view class="header-tab {{statusTab === 'expired' ? 'active' : ''}}" data-status="expired" bindtap="onTabChange" hover-class="hover">已过期</view>
+  </view>
+
+  <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="list-wrap" bindscrolltolower="onScrollTolower">
+    <view class="coupon-card {{item.statusText}}" wx:for="{{coupons}}" wx:for-index="idx" wx:key="_id" style="animation-delay:{{idx * 0.06}}s">
+      <view class="coupon-left">
+        <text class="coupon-value">{{item.valueText}}</text>
+        <text class="coupon-condition">{{item.conditionText}}</text>
+      </view>
+      <view class="coupon-right">
+        <text class="coupon-title">{{item.activityTitle || '商城优惠券'}}</text>
+        <text class="coupon-date">有效期至 {{item.validToText}}</text>
+        <view class="coupon-actions">
+          <view class="coupon-btn use-btn" wx:if="{{item.status === 'available' && statusTab === 'available' && !item.refunded}}" bindtap="onGoUse" hover-class="hover">去使用</view>
+          <view class="coupon-btn refunded-badge" wx:if="{{item.refunded}}">已退回</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="load-more" wx:if="{{loading}}">加载中...</view>
+    <empty-state text="暂无优惠券" wx:if="{{!loading && coupons.length === 0}}" />
+  </scroll-view>
+</view>

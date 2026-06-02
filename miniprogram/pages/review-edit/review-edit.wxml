@@ -1,0 +1,42 @@
+<view class="page fade-in" wx:if="{{product}}">
+  <view class="product-info">
+    <image class="product-img" src="{{product.image}}" mode="aspectFill" />
+    <text class="product-name">{{product.name}}</text>
+  </view>
+
+  <view class="rating-section">
+    <text class="section-label">商品评分</text>
+    <view class="stars">
+      <text class="star {{rating >= 1 ? 'active' : ''}}" data-score="1" bindtap="onRatingTap" hover-class="hover">★</text>
+      <text class="star {{rating >= 2 ? 'active' : ''}}" data-score="2" bindtap="onRatingTap" hover-class="hover">★</text>
+      <text class="star {{rating >= 3 ? 'active' : ''}}" data-score="3" bindtap="onRatingTap" hover-class="hover">★</text>
+      <text class="star {{rating >= 4 ? 'active' : ''}}" data-score="4" bindtap="onRatingTap" hover-class="hover">★</text>
+      <text class="star {{rating >= 5 ? 'active' : ''}}" data-score="5" bindtap="onRatingTap" hover-class="hover">★</text>
+    </view>
+  </view>
+
+  <view class="content-section">
+    <text class="section-label">评价内容</text>
+    <textarea class="content-input" placeholder="说说你的使用感受..." value="{{content}}" bindinput="onContentInput" maxlength="500" />
+    <text class="word-count">{{content.length}}/500</text>
+  </view>
+
+  <view class="image-section">
+    <text class="section-label">上传图片（最多3张）</text>
+    <view class="image-list">
+      <view class="image-item" wx:for="{{images}}" wx:key="*this">
+        <image class="uploaded-img" src="{{item}}" mode="aspectFill" />
+        <view class="del-img" data-index="{{index}}" bindtap="onDeleteImage" hover-class="hover">✕</view>
+      </view>
+      <view class="image-item add-btn" wx:if="{{images.length < 3}}" bindtap="onAddImage" hover-class="hover">
+        <text class="add-icon">+</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="submit-section">
+    <view class="submit-btn {{canSubmit ? '' : 'disabled'}}" bindtap="onSubmit" hover-class="hover">
+      {{submitting ? '提交中...' : '提交评价'}}
+    </view>
+  </view>
+</view>

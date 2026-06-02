@@ -1,0 +1,44 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+<view class="page fade-in">
+  <view class="tabs">
+    <view
+      class="tab {{currentTab === item.key ? 'active' : ''}}"
+      wx:for="{{tabs}}"
+      wx:key="key"
+      data-key="{{item.key}}"
+      bindtap="onTabChange"
+    >
+      <text>{{item.label}}</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="order-scroll" aria-label="订单列表">
+    <view class="order-card" wx:for="{{orders}}" wx:key="orderNo" data-orderno="{{item.orderNo}}" bindtap="onOrderTap" hover-class="hover">
+      <view class="order-header">
+        <text class="order-no">订单号: {{item.orderNo}}</text>
+        <text class="order-status" style="color: {{orderStatusMap[item.status] && orderStatusMap[item.status].color}}">{{item.statusText}}</text>
+      </view>
+
+      <view class="order-items">
+        <view class="order-item" wx:for="{{item.items}}" wx:key="productId">
+           <image class="order-item-img" src="{{item.image || ''}}" mode="aspectFill" lazy-load="{{true}}" />
+          <view class="order-item-info">
+            <text class="order-item-name">{{item.name}}</text>
+            <text class="order-item-qty">×{{item.quantity}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="order-footer">
+        <text class="order-time">{{item.createTimeText}}</text>
+        <text class="order-total">合计: {{fmt.price(item.totalPrice)}}</text>
+      </view>
+    </view>
+
+    <empty-state text="暂无订单" wx:if="{{!loading && orders.length === 0}}" />
+
+    <view class="load-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </scroll-view>
+</view>

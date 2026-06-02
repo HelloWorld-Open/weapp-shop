@@ -1,0 +1,60 @@
+.page { height: 100vh; background: #f5f0eb; display: flex; flex-direction: column }
+
+.scroll { flex: 1; padding-bottom: 120rpx }
+.skeleton-wrap { padding: 0 }
+.sk-cover { height: 420rpx; background: linear-gradient(90deg,#e8e2dc 25%,#f0ece6 50%,#e8e2dc 75%); animation: sk 1.5s infinite; background-size: 200% 100% }
+.sk-card { height: 200rpx; margin: 20rpx; border-radius: 20rpx; background: linear-gradient(90deg,#e8e2dc 25%,#f0ece6 50%,#e8e2dc 75%); animation: sk 1.5s infinite; background-size: 200% 100% }
+@keyframes sk { 0% { background-position: 200% 0 } 100% { background-position: -200% 0 } }
+
+.cover-wrap { position: relative; height: 420rpx; overflow: hidden }
+.cover-img { width: 100%; height: 100%; position: absolute; top: 0; left: 0 }
+.cover-mask { position: absolute; bottom: 0; left: 0; right: 0; height: 280rpx; background: linear-gradient(transparent, rgba(0,0,0,0.65)) }
+.cover-info { position: absolute; bottom: 24rpx; left: 28rpx; right: 28rpx }
+.cover-title { font-size: 36rpx; font-weight: 800; color: #fff; display: block; text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.3) }
+.cover-desc { font-size: 24rpx; color: rgba(255,255,255,0.85); margin-top: 10rpx; display: block; line-height: 1.4 }
+.cover-tags { display: flex; gap: 12rpx; margin-top: 16rpx }
+.c-tag { padding: 4rpx 16rpx; border-radius: 16rpx; font-size: 20rpx; font-weight: 500; background: rgba(255,255,255,0.2); color: #fff; backdrop-filter: blur(4px) }
+.c-tag.coupon { background: rgba(255,71,87,0.5) }
+.c-tag.prize { background: rgba(255,165,2,0.5) }
+
+.countdown-bar { display: flex; align-items: center; margin: -20rpx 24rpx 0; padding: 18rpx 28rpx; background: #fff; border-radius: 16rpx; box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.08); position: relative; z-index: 2 }
+.cd-icon { font-size: 32rpx; margin-right: 12rpx }
+.cd-text { font-size: 26rpx; font-weight: 600; color: #1a1a2e }
+
+.task-card, .reward-card { background: #fff; margin: 20rpx 24rpx; border-radius: 20rpx; padding: 28rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04) }
+.card-title { font-size: 30rpx; font-weight: 700; color: #1a1a2e; display: block; margin-bottom: 14rpx }
+.task-desc { font-size: 26rpx; color: #6c6c7a; line-height: 1.6; display: block }
+
+.progress-area { margin-top: 24rpx }
+
+.bar-progress { width: 100% }
+.bar-track { width: 100%; height: 28rpx; background: #f0ece6; border-radius: 14rpx; overflow: hidden }
+.bar-fill { height: 100%; background: linear-gradient(90deg, #ff4757, #ff6348); border-radius: 14rpx; transition: width 0.6s ease }
+.bar-labels { display: flex; justify-content: space-between; margin-top: 10rpx; font-size: 22rpx; color: #6c6c7a }
+.bar-pct { color: #ff4757; font-weight: 700 }
+
+.task-action { margin-top: 20rpx }
+.task-tip { font-size: 22rpx; color: #a0a0a0; line-height: 1.5 }
+
+.coupon-box { background: linear-gradient(135deg, #fff5f5, #fff0f0); border-radius: 16rpx; overflow: hidden }
+.coupon-rip { position: relative }
+.coupon-body { padding: 32rpx 28rpx; text-align: center; position: relative }
+.coupon-rip::before, .coupon-rip::after { content: ''; position: absolute; width: 36rpx; height: 36rpx; border-radius: 50%; background: #f5f0eb; z-index: 2 }
+.coupon-rip::before { left: -18rpx; top: 50%; transform: translateY(-50%) }
+.coupon-rip::after { right: -18rpx; top: 50%; transform: translateY(-50%) }
+.cb-value { font-size: 64rpx; font-weight: 900; color: #ff4757; display: block }
+.cb-cond { font-size: 26rpx; color: #6c6c7a; margin-top: 8rpx; display: block; font-weight: 600 }
+.cb-valid { font-size: 22rpx; color: #a0a0a0; margin-top: 8rpx; display: block }
+.cb-cat { font-size: 20rpx; color: #ff4757; margin-top: 6rpx; display: block; padding: 4rpx 20rpx; border: 1rpx solid #ff4757; border-radius: 20rpx; align-self: center; margin-left: auto; margin-right: auto; width: fit-content }
+
+.prize-box { display: flex; flex-direction: column; align-items: center; padding: 20rpx 0 }
+.prize-img { width: 240rpx; height: 240rpx; border-radius: 16rpx; background: #f0ece6 }
+.prize-name { font-size: 30rpx; font-weight: 700; color: #1a1a2e; margin-top: 20rpx }
+.prize-qty { font-size: 24rpx; color: #ff4757; margin-top: 10rpx }
+
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 16rpx 28rpx; background: #fff; box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.06); display: flex; align-items: center; gap: 20rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)) }
+.bb-left { flex: 1; min-width: 0 }
+.bb-label { font-size: 24rpx; color: #8a8a8a; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.bb-btn { padding: 22rpx 48rpx; border-radius: 50rpx; text-align: center; font-size: 28rpx; font-weight: 700; color: #fff; transition: transform 0.2s; box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.15); flex-shrink: 0 }
+.bb-btn.hover { transform: scale(0.96) }
+.bb-btn:not(.active) { opacity: 0.5 }

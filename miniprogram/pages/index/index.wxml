@@ -1,0 +1,93 @@
+<scroll-view class="page fade-in" scroll-y enhanced show-scrollbar="{{false}}">
+  <view wx:if="{{loading}}" class="skeleton-wrap">
+    <view class="skeleton sk-banner"></view>
+    <view class="skeleton sk-search"></view>
+    <view class="skeleton-grid">
+      <view class="skeleton skeleton-icon" wx:for="{{8}}" wx:key="*this"></view>
+    </view>
+    <view class="skeleton" style="height:260rpx;margin:0 20rpx 20rpx"></view>
+    <view class="skeleton" style="height:400rpx;margin:0 20rpx"></view>
+  </view>
+  <swiper class="banner" autoplay circular indicator-dots indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#fff">
+    <swiper-item wx:for="{{banners}}" wx:key="_id">
+      <image class="banner-img" src="{{item.imageUrl}}" mode="aspectFit" data-link="{{item.link}}" bindtap="onBannerTap" lazy-load="{{true}}" />
+    </swiper-item>
+  </swiper>
+
+  <view class="activity-section" wx:if="{{activities.length > 0}}">
+    <view class="activity-header">
+      <text class="activity-title">🎉 活动专区</text>
+      <text class="activity-more">更多 ›</text>
+    </view>
+    <swiper class="activity-swiper" autoplay circular interval="3000" display-multiple-items="{{activities.length > 2 ? 2 : activities.length}}" previous-margin="10rpx" next-margin="10rpx">
+      <swiper-item wx:for="{{activities}}" wx:key="_id">
+        <view class="activity-card" data-id="{{item._id}}" bindtap="onActivityTap" hover-class="hover">
+          <image class="activity-img" src="{{item.image || 'https://picsum.photos/seed/act/300/180'}}" mode="aspectFill" lazy-load="{{true}}" />
+          <view class="activity-overlay"></view>
+          <text class="activity-countdown" wx:if="{{item.countdown}}">{{item.countdown}}</text>
+          <view class="activity-card-info">
+            <text class="activity-card-title">{{item.title}}</text>
+            <text class="activity-card-type">{{item.type === 'coupon' ? '🎫 优惠券' : '🎁 奖品'}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <view class="search-bar" bindtap="onSearchTap" hover-class="hover">
+    <text class="search-icon">🔍</text>
+    <text class="search-text">搜索商品</text>
+  </view>
+
+  <view class="category-grid" wx:if="{{categories.length}}">
+    <view class="category-item" wx:for="{{categories}}" wx:key="_id" data-id="{{item._id}}" data-name="{{item.name}}" bindtap="onCategoryTap" hover-class="hover">
+      <view class="category-icon">{{item.icon || '📦'}}</view>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <view class="section fade-in-up delay-3" wx:if="{{salesRanking.length}}">
+    <view class="section-header">
+      <text class="section-title">🔥 热销榜</text>
+      <text class="section-more" bindtap="onSearchTap" hover-class="hover">查看更多</text>
+    </view>
+    <view class="rank-list">
+      <view class="rank-item" wx:for="{{salesRanking}}" wx:key="_id" data-id="{{item._id}}" bindtap="onProductTap" hover-class="hover">
+        <text class="rank-num rank-num-{{index < 3 ? index + 1 : 'normal'}}">{{index + 1}}</text>
+        <image class="rank-img" src="{{item.images && item.images[0] || ''}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="rank-info">
+          <text class="rank-name">{{item.name}}</text>
+          <text class="rank-price">¥{{item.price}}</text>
+        </view>
+        <text class="rank-count">已售 {{item.sales || 0}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section fade-in-up delay-1" wx:if="{{hotProducts.length}}">
+    <view class="section-header">
+      <text class="section-title">热销推荐</text>
+      <text class="section-more" bindtap="onSearchTap" hover-class="hover">查看更多</text>
+    </view>
+    <scroll-view class="product-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view class="product-scroll-inner">
+        <view class="product-scroll-item" wx:for="{{hotProducts}}" wx:key="_id">
+          <product-card product="{{item}}" />
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="section fade-in-up delay-2" wx:if="{{newProducts.length}}">
+    <view class="section-header">
+      <text class="section-title">新品首发</text>
+      <text class="section-more" bindtap="onSearchTap" hover-class="hover">查看更多</text>
+    </view>
+    <view class="product-grid">
+      <view class="product-grid-item" wx:for="{{newProducts}}" wx:key="_id">
+        <product-card product="{{item}}" />
+      </view>
+    </view>
+  </view>
+
+</scroll-view>

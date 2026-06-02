@@ -1,0 +1,93 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+<view class="page fade-in">
+  <view class="address-section" bindtap="onSelectAddress">
+    <view wx:if="{{selectedAddress}}" class="address-info">
+      <view class="address-header">
+        <text class="address-name">{{selectedAddress.name}}</text>
+        <text class="address-phone">{{selectedAddress.phone}}</text>
+      </view>
+      <text class="address-detail">{{fmt.formatRegion(selectedAddress.region)}} {{selectedAddress.detail}}</text>
+    </view>
+    <view wx:else class="address-empty">
+      <text>请添加收货地址</text>
+    </view>
+    <text class="address-arrow">›</text>
+  </view>
+
+  <view class="items-section">
+    <view class="item" wx:for="{{items}}" wx:key="productId">
+      <image class="item-image" src="{{item.image || ''}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="item-info">
+        <text class="item-name">{{item.name}}</text>
+        <text class="item-price">¥{{item.price}} × {{item.quantity}}</text>
+      </view>
+      <text class="item-total">{{fmt.price(item.price * item.quantity)}}</text>
+    </view>
+  </view>
+
+  <view class="remark-section">
+    <text class="remark-label">订单备注</text>
+    <input class="remark-input" placeholder="选填，给商家的备注" value="{{remark}}" bindinput="onRemarkInput" />
+  </view>
+
+  <view class="coupon-section" wx:if="{{coupons.length > 0}}" bindtap="onOpenCouponPicker" hover-class="hover">
+    <text class="coupon-label">优惠券</text>
+    <view class="coupon-trigger">
+      <text class="coupon-trigger-text {{selectedCoupon ? 'selected' : ''}}">{{selectedCoupon ? (selectedCoupon.type === 'fixed' ? '¥' + selectedCoupon.value : selectedCoupon.value + '折券') + (selectedCoupon.minAmount > 0 ? ' 满' + selectedCoupon.minAmount : '') : '请选择优惠券'}}</text>
+      <text class="coupon-arrow">›</text>
+    </view>
+  </view>
+
+  <view class="coupon-picker-mask" wx:if="{{showCouponPicker}}" bindtap="onCloseCouponPicker"></view>
+  <view class="coupon-picker {{showCouponPicker ? 'show' : ''}}">
+    <view class="coupon-picker-header">
+      <text class="coupon-picker-title">选择优惠券</text>
+      <text class="coupon-picker-close" bindtap="onCloseCouponPicker">✕</text>
+    </view>
+    <scroll-view scroll-y class="coupon-picker-list">
+      <view class="coupon-picker-item {{!tempSelectedCoupon ? 'active' : ''}}" bindtap="onPickerSelectCoupon" data-coupon="{{undefined}}">
+        <view class="coupon-picker-radio">
+          <view class="coupon-picker-dot {{!tempSelectedCoupon ? 'filled' : ''}}"></view>
+        </view>
+        <text class="coupon-picker-item-text">不使用优惠券</text>
+      </view>
+      <view class="coupon-picker-item {{tempSelectedCoupon && tempSelectedCoupon._id === item._id ? 'active' : ''}}" wx:for="{{coupons}}" wx:key="_id" data-coupon="{{item}}" bindtap="onPickerSelectCoupon">
+        <view class="coupon-picker-radio">
+          <view class="coupon-picker-dot {{tempSelectedCoupon && tempSelectedCoupon._id === item._id ? 'filled' : ''}}"></view>
+        </view>
+        <view class="coupon-picker-item-info">
+          <text class="coupon-picker-item-value">{{item.type === 'fixed' ? '¥' + item.value : item.value + '折'}}</text>
+          <text class="coupon-picker-item-limit" wx:if="{{item.minAmount > 0}}">满{{item.minAmount}}可用</text>
+          <text class="coupon-picker-item-limit" wx:else>无门槛</text>
+        </view>
+        <text class="coupon-picker-item-save" wx:if="{{item.type === 'fixed'}}">省¥{{item.value}}</text>
+        <text class="coupon-picker-item-save" wx:if="{{item.type === 'discount'}}">省¥{{Math.round(totalPrice * (10 - item.value) / 10)}}</text>
+      </view>
+    </scroll-view>
+    <view class="coupon-picker-footer">
+      <view class="coupon-picker-clear" bindtap="onClearCoupon">不使用</view>
+      <view class="coupon-picker-confirm" bindtap="onConfirmCoupon">确认选择</view>
+    </view>
+  </view>
+
+  <view class="total-section">
+    <view class="total-line" wx:if="{{couponDiscount > 0}}">
+      <text class="total-label">优惠</text>
+      <text class="total-discount">-¥{{couponDiscount}}</text>
+    </view>
+    <view class="total-line">
+      <text class="total-label">合计</text>
+      <text class="total-price">{{fmt.price(totalPrice)}}</text>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="total-display">
+      <text>实付: </text>
+      <text class="total-amount">{{fmt.price(totalPrice - couponDiscount)}}</text>
+    </view>
+    <view class="submit-btn ripple-btn" bindtap="onSubmitOrder" hover-class="hover">
+      <text>提交订单</text>
+    </view>
+  </view>
+</view>

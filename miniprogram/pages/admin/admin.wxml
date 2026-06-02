@@ -1,0 +1,592 @@
+<view class="page fade-in">
+  <view class="header" style="padding-top: {{statusBarHeight}}px">
+    <view class="header-left" bindtap="onLogout" hover-class="hover">
+      <text class="header-back">‹</text>
+      <text class="header-logout">退出</text>
+    </view>
+    <text class="header-title">管理后台</text>
+    <view class="header-right"></view>
+  </view>
+
+  <view class="tabs">
+    <view class="tab {{tabIndex === 0 ? 'active' : ''}}" data-index="0" bindtap="onTabChange" hover-class="hover">概览</view>
+    <view class="tab {{tabIndex === 1 ? 'active' : ''}}" data-index="1" bindtap="onTabChange" hover-class="hover">用户</view>
+    <view class="tab {{tabIndex === 2 ? 'active' : ''}}" data-index="2" bindtap="onTabChange" hover-class="hover">商品</view>
+    <view class="tab {{tabIndex === 3 ? 'active' : ''}}" data-index="3" bindtap="onTabChange" hover-class="hover">订单</view>
+    <view class="tab {{tabIndex === 4 ? 'active' : ''}}" data-index="4" bindtap="onTabChange" hover-class="hover">轮播</view>
+    <view class="tab {{tabIndex === 5 ? 'active' : ''}}" data-index="5" bindtap="onTabChange" hover-class="hover">评价</view>
+    <view class="tab {{tabIndex === 6 ? 'active' : ''}}" data-index="6" bindtap="onTabChange" hover-class="hover">活动</view>
+  </view>
+
+  <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="content" scroll-top="{{adminScrollTop}}" bindscroll="onAdminScroll" bindscrolltolower="onScrollTolower">
+
+    <!-- ═══ 概览 ═══ -->
+    <view class="dashboard" wx:if="{{tabIndex === 0}}">
+      <view class="chart-tabs">
+        <view class="chart-tab {{chartTab === 0 ? 'active' : ''}}" data-index="0" bindtap="onChartTabChange" hover-class="hover">📈 用户增长</view>
+        <view class="chart-tab {{chartTab === 1 ? 'active' : ''}}" data-index="1" bindtap="onChartTabChange" hover-class="hover">🧩 商品分类</view>
+        <view class="chart-tab {{chartTab === 2 ? 'active' : ''}}" data-index="2" bindtap="onChartTabChange" hover-class="hover">📊 订单趋势</view>
+        <view class="chart-tab {{chartTab === 3 ? 'active' : ''}}" data-index="3" bindtap="onChartTabChange" hover-class="hover">❤️ 收藏统计</view>
+      </view>
+
+      <!-- 用户增长 -->
+      <view class="fade-in" wx:if="{{chartTab === 0}}">
+        <view class="metric-bar">
+          <view class="metric-card big anim-delay-1">
+            <text class="metric-num highlight">{{userTrend.totalUsers}}</text>
+            <text class="metric-label">累计注册用户</text>
+          </view>
+          <view class="day-tabs" style="align-self:center">
+            <view class="day-tab {{userDays === 7 ? 'active' : ''}}" data-days="7" bindtap="onUserDaysChange" hover-class="hover">近7天</view>
+            <view class="day-tab {{userDays === 30 ? 'active' : ''}}" data-days="30" bindtap="onUserDaysChange" hover-class="hover">近30天</view>
+          </view>
+        </view>
+        <view class="chart-box anim-delay-2">
+          <view class="legend-hint">
+            <view class="lh-item"><view class="lh-dot" style="background:linear-gradient(90deg,#4a90d9,#74b9ff)"></view>新增注册</view>
+            <view class="lh-item"><view class="lh-dot" style="background:linear-gradient(90deg,#a55eea,#a29bfe)"></view>活跃登录</view>
+          </view>
+          <view class="bar-chart-h" wx:if="{{userTrend.daily.length > 0}}">
+            <view class="bar-row anim-delay-1" wx:for="{{userTrend.daily}}" wx:key="date" wx:for-index="i">
+              <text class="bar-label">{{item.date.slice(5)}}</text>
+              <view class="bar-track">
+                <view class="bar-fill bar-fill-blue" style="width:{{maxUserVal > 0 ? (item.newUsers / maxUserVal * 100) : 0}}%"></view>
+                <view class="bar-fill bar-fill-purple" style="width:{{maxUserVal > 0 ? (item.logins / maxUserVal * 100) : 0}}%"></view>
+              </view>
+              <view class="bar-vals">
+                <text class="bar-val blue">{{item.newUsers}}</text>
+                <text class="bar-val purple">{{item.logins}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 收藏统计 -->
+      <view class="fade-in" wx:if="{{chartTab === 3 && favStats.totalFavorites > 0}}">
+        <view class="metric-bar anim-delay-1">
+          <view class="metric-card n1"><text class="metric-icon">❤️</text><text class="metric-num">{{favStats.totalFavorites}}</text><text class="metric-label">总收藏数</text></view>
+          <view class="metric-card n2"><text class="metric-icon">👥</text><text class="metric-num">{{favStats.totalUsers}}</text><text class="metric-label">收藏用户数</text></view>
+        </view>
+        <view class="day-tabs">
+          <view class="day-tab {{favDays === 7 ? 'active' : ''}}" data-days="7" bindtap="onFavDaysChange" hover-class="hover">近7天</view>
+          <view class="day-tab {{favDays === 30 ? 'active' : ''}}" data-days="30" bindtap="onFavDaysChange" hover-class="hover">近30天</view>
+        </view>
+        <view class="chart-box anim-delay-2">
+          <view class="legend-hint">
+            <view class="lh-item"><view class="lh-dot" style="background:linear-gradient(90deg,#ff4757,#ff6b81)"></view>新增收藏</view>
+          </view>
+          <view class="bar-chart-h" wx:if="{{favStats.daily.length > 0}}">
+            <view class="bar-row" wx:for="{{favStats.daily}}" wx:key="date" wx:for-index="i">
+              <text class="bar-label">{{item.date.slice(5)}}</text>
+              <view class="bar-track">
+                <view class="bar-fill bar-fill-red" style="width:{{maxFavVal > 0 ? (item.count / maxFavVal * 100) : 0}}%"></view>
+              </view>
+              <view class="bar-vals">
+                <text class="bar-val red">{{item.count}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="section-title anim-delay-3">收藏榜 TOP10</view>
+        <view class="legend-list anim-delay-3" wx:if="{{favStats.topFavorited.length > 0}}">
+          <view class="legend-row" wx:for="{{favStats.topFavorited}}" wx:key="productId" wx:for-index="i">
+            <text class="rank-num {{i < 3 ? 'top' : ''}}">{{i + 1}}</text>
+            <image class="rank-img" src="{{item.image}}" mode="aspectFill" lazy-load="{{true}}" />
+            <text class="legend-name">{{item.name}}</text>
+            <text class="legend-count">{{item.count}} 次</text>
+          </view>
+        </view>
+      </view>
+      <empty-state text="暂无收藏数据" wx:if="{{chartTab === 3 && favStats.totalFavorites === 0}}" />
+
+      <!-- 商品分类 -->
+      <view class="fade-in" wx:if="{{chartTab === 1}}">
+        <view class="legend-list anim-delay-1">
+          <view class="legend-row" wx:for="{{categoryStats.list}}" wx:key="_id" data-category-id="{{item._id}}" data-category-name="{{item.name}}" bindtap="onCategoryClick" hover-class="hover">
+            <view class="legend-dot" style="background:{{item.color}}"></view>
+            <text class="legend-name {{item.count === 0 ? 'dim' : ''}}">{{item.name}}</text>
+            <view class="legend-bar-track">
+              <view class="legend-bar-fill" style="width:{{item.pct}}%;background:{{item.color}}"></view>
+            </view>
+            <text class="legend-count">{{item.count}}</text>
+            <text class="legend-pct">{{item.pct}}%</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 订单趋势 -->
+      <view class="fade-in" wx:if="{{chartTab === 2}}">
+        <view class="metric-bar order-metrics anim-delay-1">
+          <view class="metric-card n1"><text class="metric-icon">📦</text><text class="metric-num">{{orderTrend.summary.totalCreated}}</text><text class="metric-label">总下单量</text></view>
+          <view class="metric-card n2"><text class="metric-icon">✅</text><text class="metric-num">{{orderTrend.summary.totalCompleted}}</text><text class="metric-label">已完成</text></view>
+          <view class="metric-card n3"><text class="metric-icon">↩️</text><text class="metric-num">{{orderTrend.summary.totalRefunded}}</text><text class="metric-label">已退款</text></view>
+          <view class="metric-card n4"><text class="metric-icon">📊</text><text class="metric-num" style="color:{{orderTrend.summary.refundRateColor}}">{{orderTrend.summary.refundRate}}%</text><text class="metric-label">退款率</text></view>
+        </view>
+        <view class="day-tabs">
+          <view class="day-tab {{orderDays === 7 ? 'active' : ''}}" data-days="7" bindtap="onOrderDaysChange" hover-class="hover">近7天</view>
+          <view class="day-tab {{orderDays === 30 ? 'active' : ''}}" data-days="30" bindtap="onOrderDaysChange" hover-class="hover">近30天</view>
+        </view>
+        <view class="chart-box anim-delay-2">
+          <view class="legend-hint">
+            <view class="lh-item"><view class="lh-dot" style="background:linear-gradient(90deg,#4a90d9,#74b9ff)"></view>下单</view>
+            <view class="lh-item"><view class="lh-dot" style="background:linear-gradient(90deg,#2ed573,#7bed9f)"></view>完成</view>
+            <view class="lh-item"><view class="lh-dot" style="background:linear-gradient(90deg,#ff6348,#ff4757)"></view>退款</view>
+          </view>
+          <view class="bar-chart-h" wx:if="{{orderTrend.daily.length > 0}}">
+            <view class="bar-row" wx:for="{{orderTrend.daily}}" wx:key="date" wx:for-index="i">
+              <text class="bar-label">{{item.date.slice(5)}}</text>
+              <view class="bar-track">
+                <view class="bar-fill bar-fill-blue" style="width:{{maxOrderVal > 0 ? (item.created / maxOrderVal * 100) : 0}}%"></view>
+                <view class="bar-fill bar-fill-green" style="width:{{maxOrderVal > 0 ? (item.completed / maxOrderVal * 100) : 0}}%"></view>
+                <view class="bar-fill bar-fill-red" style="width:{{maxOrderVal > 0 ? (item.refunded / maxOrderVal * 100) : 0}}%"></view>
+              </view>
+              <view class="bar-vals">
+                <text class="bar-val blue">{{item.created}}</text>
+                <text class="bar-val green">{{item.completed}}</text>
+                <text class="bar-val red">{{item.refunded}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <!-- ═══ 用户管理 ═══ -->
+    <view class="list-section" wx:if="{{tabIndex === 1}}">
+      <view class="list-header">
+        <view class="list-header-left">
+          <text class="list-header-title">用户管理</text>
+          <text class="list-header-count">{{users.length}} 人</text>
+        </view>
+      </view>
+
+      <view class="search-bar">
+        <text class="search-icon">🔍</text>
+        <input class="search-input" placeholder="搜索用户名或手机号" value="{{userKeyword}}" bindinput="onChangeUserKeyword" bindconfirm="onSearchUser" />
+        <text class="search-btn ripple-btn" bindtap="onSearchUser" hover-class="hover">搜索</text>
+      </view>
+
+      <view class="list-item {{item.banned ? 'banned' : ''}}" wx:for="{{users}}" wx:for-index="idx" wx:key="_id" style="animation-delay:{{idx * 0.06}}s">
+        <view class="item-top">
+          <view class="item-top-left">
+            <view class="user-name-row">
+              <text class="user-avatar">👤</text>
+              <text class="item-name">{{item.displayName}}</text>
+            </view>
+            <view class="user-meta">
+              <text class="user-phone">📱 {{item.phone || '未绑定'}}</text>
+            </view>
+          </view>
+          <view class="banned-badge" wx:if="{{item.banned}}">已禁用</view>
+        </view>
+        <view class="item-divider"></view>
+        <view class="item-actions">
+          <view class="action-btn edit-btn ripple-btn" data-user="{{item}}" bindtap="onOpenEditUser" hover-class="hover">✎ 编辑</view>
+          <view class="action-btn ban-btn ripple-btn {{item.banned ? 'unban-btn' : ''}}" data-id="{{item._id}}" data-banned="{{!!item.banned}}" bindtap="onToggleBan" hover-class="hover">{{item.banned ? '✅ 启用' : '🚫 禁用'}}</view>
+          <view class="action-btn del-btn ripple-btn" data-id="{{item._id}}" bindtap="onDeleteUser" hover-class="hover">✕ 删除</view>
+        </view>
+      </view>
+      <empty-state text="暂无用户数据" wx:if="{{!usersLoading && users.length === 0}}" />
+      <view class="load-more" wx:if="{{usersLoading}}">加载中...</view>
+    </view>
+
+    <!-- 用户编辑弹窗 -->
+    <view class="user-mask {{userEditModal ? 'show' : ''}}" bindtap="onCloseEditUser">
+      <view class="user-modal" catchtap="onStop" style="animation: elasticIn 0.4s ease-out">
+        <text class="user-modal-title">编辑用户</text>
+
+        <view class="user-modal-body">
+          <view class="user-avatar-upload" bindtap="onEditAvatar" hover-class="hover">
+            <image class="user-avatar-img" wx:if="{{editUserAvatar}}" src="{{editUserAvatar}}" mode="aspectFill" />
+            <text class="user-avatar-placeholder" wx:if="{{!editUserAvatar}}">👤</text>
+            <view class="user-avatar-overlay">📷</view>
+          </view>
+
+          <view class="user-field">
+            <text class="user-field-label">昵称</text>
+            <input class="user-field-input" placeholder="请输入昵称" value="{{editUserName}}" bindinput="onEditNameInput" />
+          </view>
+
+          <view class="user-field user-field-readonly">
+            <text class="user-field-label">手机</text>
+            <text class="user-field-value">{{editUserPhone || '未绑定'}}</text>
+          </view>
+
+          <view class="user-field user-field-readonly">
+            <text class="user-field-label">状态</text>
+            <text class="user-field-value" style="color:{{editUserBanned ? '#ff4757' : '#2ed573'}}">{{editUserBanned ? '已禁用' : '正常用户'}}</text>
+          </view>
+        </view>
+
+        <view class="user-modal-foot">
+          <view class="user-btn-cancel" bindtap="onCloseEditUser" hover-class="hover">取消</view>
+          <view class="user-btn-save ripple-btn" bindtap="onSaveEditUser" hover-class="hover">保存</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ═══ 商品管理 ═══ -->
+    <view class="list-section" wx:if="{{tabIndex === 2}}">
+      <view class="list-header">
+        <view class="list-header-left">
+          <text class="list-header-title">全部商品</text>
+          <text class="list-header-count">{{products.length}} 件</text>
+        </view>
+        <view class="add-btn ripple-btn" bindtap="onAddProduct" hover-class="hover">+ 添加商品</view>
+      </view>
+
+      <view class="search-bar">
+        <text class="search-icon">🔍</text>
+        <input class="search-input" placeholder="搜索商品名称或ID" value="{{productKeyword}}" bindinput="onChangeProductKeyword" bindconfirm="onSearchProduct" />
+        <text class="search-btn" bindtap="onSearchProduct" hover-class="hover">搜索</text>
+      </view>
+
+      <view class="filter-bar">
+        <picker class="filter-picker" mode="selector" range="{{allCategories}}" range-key="name" value="{{pickerCategoryIndex}}" bindchange="onProductCategoryFilter">
+          <text class="filter-text">{{selectedCategoryText || '全部分类'}}</text>
+          <text class="picker-arrow">▾</text>
+        </picker>
+        <view class="filter-tabs">
+          <view class="filter-tab {{productStatus === '' ? 'active' : ''}}" data-value="" bindtap="onProductStatusFilter" hover-class="hover">全部</view>
+          <view class="filter-tab {{productStatus === 'on' ? 'active' : ''}}" data-value="on" bindtap="onProductStatusFilter" hover-class="hover">上架</view>
+          <view class="filter-tab {{productStatus === 'off' ? 'active' : ''}}" data-value="off" bindtap="onProductStatusFilter" hover-class="hover">下架</view>
+        </view>
+      </view>
+
+      <view class="list-item" wx:for="{{products}}" wx:for-index="idx" wx:key="_id" style="animation-delay:{{idx * 0.06}}s">
+        <view class="item-top" bindtap="onEditProduct" data-product="{{item}}" hover-class="hover">
+          <view class="item-top-left">
+            <text class="item-name">{{item.name}}</text>
+            <view class="item-meta">
+              <text class="item-price">¥{{item.price}}</text>
+              <text class="item-stock">库存 {{item.stock}}</text>
+            </view>
+          </view>
+          <view class="status-tag {{item.status === 'on' ? 'tag-on' : 'tag-off'}}">
+            <view class="status-dot"></view>
+            <text>{{item.status === 'on' ? '上架' : '下架'}}</text>
+          </view>
+        </view>
+        <view class="item-divider"></view>
+        <view class="item-actions">
+          <view class="action-btn edit-btn ripple-btn" data-product="{{item}}" catchtap="onEditProduct" hover-class="hover">✎ 编辑</view>
+          <view class="action-btn toggle-btn ripple-btn {{item.status === 'on' ? 'toggle-off' : 'toggle-on'}}" data-product="{{item}}" bindtap="onToggleStatus" hover-class="hover">{{item.status === 'on' ? '↻ 下架' : '↻ 上架'}}</view>
+          <view class="action-btn del-btn ripple-btn" data-id="{{item._id}}" bindtap="onDeleteProduct" hover-class="hover">✕ 删除</view>
+        </view>
+      </view>
+
+      <view class="load-more" wx:if="{{productsLoading}}">加载中...</view>
+      <empty-state text="暂无商品" wx:if="{{!productsLoading && products.length === 0}}" />
+    </view>
+
+    <!-- ═══ 订单管理 ═══ -->
+    <view class="list-section" wx:if="{{tabIndex === 3}}">
+      <view class="list-header">
+        <view class="list-header-left">
+          <text class="list-header-title">订单管理</text>
+          <text class="list-header-count">{{orders.length}} 单</text>
+        </view>
+      </view>
+
+      <view class="list-item" wx:for="{{orders}}" wx:for-index="idx" wx:key="orderNo" style="animation-delay:{{idx * 0.06}}s">
+        <view class="item-top">
+          <view class="item-top-left">
+            <text class="item-name">订单 {{item.orderNo}}</text>
+            <view class="item-meta">
+              <text class="item-price">¥{{item.totalPrice}}</text>
+              <text class="item-stock">{{item.createTimeText}}</text>
+            </view>
+          </view>
+          <view class="status-tag tag-{{item.status}}">
+            <view class="status-dot"></view>
+            <text>{{item.statusText}}</text>
+          </view>
+        </view>
+        <view class="item-divider"></view>
+        <view class="item-actions">
+          <view class="action-btn view-btn ripple-btn" data-orderno="{{item.orderNo}}" bindtap="onViewOrder" hover-class="hover">📄 详情</view>
+          <view class="action-btn ship-btn ripple-btn" wx:if="{{item.status === 'paid'}}" data-orderno="{{item.orderNo}}" bindtap="onShipOrder" hover-class="hover">🚚 发货</view>
+          <view class="action-btn refund-btn ripple-btn" wx:if="{{item.status === 'paid' || item.status === 'shipped' || item.status === 'delivered'}}" data-orderno="{{item.orderNo}}" bindtap="onRefundOrder" hover-class="hover">↩️ 退款</view>
+          <view class="action-btn order-cancelled-btn" wx:if="{{item.status === 'refunded'}}">↩️ 已退款</view>
+          <view class="action-btn del-btn ripple-btn" data-orderno="{{item.orderNo}}" bindtap="onDeleteOrder" hover-class="hover">✕ 删除</view>
+        </view>
+      </view>
+      <view class="load-more" wx:if="{{ordersLoading}}">加载中...</view>
+      <empty-state text="暂无订单数据" wx:if="{{!ordersLoading && orders.length === 0}}" />
+    </view>
+
+    <!-- ═══ 轮播图管理 ═══ -->
+    <view class="bn-section" wx:if="{{tabIndex === 4}}">
+      <view class="list-header">
+        <view class="list-header-left">
+          <text class="list-header-title">轮播图管理</text>
+          <text class="list-header-count">{{banners.length}} 张</text>
+        </view>
+        <view class="add-btn ripple-btn" bindtap="onAddBanner" hover-class="hover">+ 添加</view>
+      </view>
+
+      <view class="bn-card" wx:for="{{banners}}" wx:for-index="idx" wx:key="_id" style="animation-delay:{{idx * 0.06}}s" hover-class="hover">
+        <view class="bn-index">{{idx + 1}}</view>
+        <image class="bn-img" src="{{item.imageUrl}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="bn-info">
+          <text class="bn-link">链接: {{item.link || '未设置'}}</text>
+        </view>
+        <view class="bn-actions">
+          <view class="bn-btn bn-up ripple-btn" data-index="{{idx}}" bindtap="onMoveUp" wx:if="{{idx > 0}}" hover-class="hover">▲上移</view>
+          <view class="bn-btn bn-down ripple-btn" data-index="{{idx}}" bindtap="onMoveDown" wx:if="{{idx < banners.length - 1}}" hover-class="hover">▼下移</view>
+          <view class="bn-btn bn-edit ripple-btn" data-id="{{item._id}}" bindtap="onEditBtn" hover-class="hover">✎编辑</view>
+          <view class="bn-btn bn-del ripple-btn" data-id="{{item._id}}" bindtap="onDelBtn" hover-class="hover">✕删除</view>
+        </view>
+      </view>
+
+      <empty-state text="暂无轮播图，点击上方「+ 添加」" wx:if="{{!bannersLoading && banners.length === 0}}" />
+    </view>
+
+    <!-- ═══ 评价管理 ═══ -->
+    <view class="list-section" wx:if="{{tabIndex === 5}}">
+      <view class="list-header">
+        <view class="list-header-left">
+          <text class="list-header-title">评价管理</text>
+          <text class="list-header-count">{{reviews.length}} 条</text>
+        </view>
+      </view>
+
+      <view class="search-bar">
+        <text class="search-icon">🔍</text>
+        <input class="search-input" placeholder="搜索商品/用户/评价内容" value="{{reviewKeyword}}" bindinput="onReviewKeywordInput" bindconfirm="onSearchReview" />
+        <text class="search-btn ripple-btn" bindtap="onSearchReview" hover-class="hover">搜索</text>
+      </view>
+
+      <view class="list-item" wx:for="{{reviews}}" wx:for-index="idx" wx:key="_id" style="animation-delay:{{idx * 0.06}}s">
+        <view class="item-top">
+          <view class="item-top-left">
+            <view class="user-name-row">
+              <image class="review-admin-img" wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill" />
+              <view class="review-admin-letter {{item.avatarColor}}" wx:else><text class="review-admin-letter-text">{{item.avatarText}}</text></view>
+              <text class="item-name">{{item.nickName || '用户'}}</text>
+            </view>
+            <view class="item-meta">
+              <view class="review-admin-stars"><text wx:for="{{item.stars}}" wx:key="*this" class="us-star {{item.active ? 'active' : ''}}">★</text></view>
+              <text class="item-stock">{{item.productName}}</text>
+            </view>
+            <text class="review-admin-content">{{item.content}}</text>
+            <view class="review-admin-thumbs" wx:if="{{item.images && item.images.length > 0}}">
+              <image class="review-admin-thumb-img" wx:for="{{item.images}}" wx:key="*this" src="{{item}}" mode="aspectFill" />
+            </view>
+            <text class="review-admin-time">🕐 {{item.createTimeText}}</text>
+          </view>
+        </view>
+        <view class="item-divider"></view>
+        <view class="item-actions">
+          <view class="action-btn del-btn ripple-btn" data-id="{{item._id}}" bindtap="onDeleteReview" hover-class="hover">✕ 删除</view>
+        </view>
+      </view>
+
+      <view class="load-more" wx:if="{{reviewsLoading}}">加载中...</view>
+      <empty-state text="暂无评价" wx:if="{{!reviewsLoading && reviews.length === 0}}" />
+    </view>
+
+    <!-- ═══ 活动管理 ═══ -->
+    <view class="list-section" wx:if="{{tabIndex === 6}}">
+      <view class="list-header">
+        <view class="list-header-left">
+          <text class="list-header-title">活动管理</text>
+          <text class="list-header-count">{{activities.length}} 个</text>
+        </view>
+        <view class="add-btn ripple-btn" bindtap="onOpenAddActivity" hover-class="hover">+ 添加活动</view>
+      </view>
+
+      <view class="list-item" wx:for="{{activities}}" wx:for-index="idx" wx:key="_id" style="animation-delay:{{idx * 0.06}}s">
+        <view class="item-top">
+          <view class="item-top-left">
+            <text class="item-name">{{item.title}}</text>
+            <view class="item-meta">
+              <text class="item-price">{{item.type === 'coupon' ? '🎫 优惠券' : '🎁 实物奖品'}}</text>
+              <text class="item-stock">{{item.timeRange}}</text>
+            </view>
+            <view class="item-meta">
+              <text class="item-stock">{{item.taskType === 'browse' ? '👀 浏览任务' : '🛒 消费任务'}}</text>
+              <text class="item-stock" wx:if="{{item.claimedCount > 0}}">已领取 {{item.claimedCount}}</text>
+            </view>
+          </view>
+          <view class="status-tag tag-{{item.status === 'published' ? 'on' : 'off'}}">
+            <view class="status-dot"></view>
+            <text>{{item.statusText}}</text>
+          </view>
+        </view>
+        <view class="item-divider"></view>
+        <view class="item-actions">
+          <view class="action-btn edit-btn ripple-btn" data-activity="{{item}}" bindtap="onOpenEditActivity" hover-class="hover">✎ 编辑</view>
+          <view class="action-btn toggle-btn ripple-btn {{item.status === 'published' ? 'toggle-off' : 'toggle-on'}}" data-id="{{item._id}}" data-status="{{item.status}}" bindtap="onToggleActivityStatus" hover-class="hover">{{item.status === 'published' ? '↻ 下架' : '↻ 发布'}}</view>
+          <view class="action-btn del-btn ripple-btn" data-id="{{item._id}}" bindtap="onDeleteActivity" hover-class="hover">✕ 删除</view>
+        </view>
+      </view>
+
+      <view class="load-more" wx:if="{{activitiesLoading}}">加载中...</view>
+      <empty-state text="暂无活动，点击上方「+ 添加活动」" wx:if="{{!activitiesLoading && activities.length === 0}}" />
+    </view>
+
+    <!-- 活动编辑弹窗 -->
+    <view class="bn-mask {{activityModal ? 'show' : ''}}" bindtap="onCloseActivityModal">
+      <view class="bn-modal" catchtap="onStop" style="animation: elasticIn 0.4s ease-out;max-height:80vh;overflow-y:auto">
+        <text class="bn-modal-title">{{editActivityId ? '编辑' : '添加'}}活动</text>
+
+        <view class="bn-modal-body">
+          <view class="bn-url-row">
+            <text class="bn-url-label">活动标题</text>
+            <input class="bn-url-input" placeholder="请输入活动标题" value="{{activityForm.title}}" data-field="title" bindinput="onActivityFieldChange" />
+          </view>
+
+          <view class="bn-url-row">
+            <text class="bn-url-label">活动描述</text>
+            <input class="bn-url-input" placeholder="活动描述" value="{{activityForm.description}}" data-field="description" bindinput="onActivityFieldChange" />
+          </view>
+
+          <view class="bn-url-row">
+            <text class="bn-url-label">封面图URL</text>
+            <input class="bn-url-input" placeholder="可选，封面图地址" value="{{activityForm.image}}" data-field="image" bindinput="onActivityFieldChange" />
+          </view>
+
+          <view class="bn-url-row">
+            <text class="bn-url-label">奖励类型</text>
+            <view class="filter-tabs" style="display:flex;gap:0;border-radius:10rpx;overflow:hidden">
+              <view class="filter-tab {{activityForm.type === 'coupon' ? 'active' : ''}}" data-type="coupon" bindtap="onActivityTypeChange" hover-class="hover" style="flex:1;padding:12rpx">🎫 优惠券</view>
+              <view class="filter-tab {{activityForm.type === 'prize' ? 'active' : ''}}" data-type="prize" bindtap="onActivityTypeChange" hover-class="hover" style="flex:1;padding:12rpx">🎁 实物奖品</view>
+            </view>
+          </view>
+
+          <view class="bn-url-row">
+            <text class="bn-url-label">任务类型</text>
+            <view class="filter-tabs" style="display:flex;gap:0;border-radius:10rpx;overflow:hidden">
+              <view class="filter-tab {{activityForm.taskType === 'browse' ? 'active' : ''}}" data-type="browse" bindtap="onActivityTaskTypeChange" hover-class="hover" style="flex:1;padding:12rpx">👀 浏览商品</view>
+              <view class="filter-tab {{activityForm.taskType === 'purchase' ? 'active' : ''}}" data-type="purchase" bindtap="onActivityTaskTypeChange" hover-class="hover" style="flex:1;padding:12rpx">🛒 消费满额</view>
+            </view>
+          </view>
+
+          <view class="bn-url-row" wx:if="{{activityForm.taskType === 'browse'}}">
+            <text class="bn-url-label">需浏览时长（秒）</text>
+            <input class="bn-url-input" placeholder="60" value="{{activityForm.taskConfig.browseSeconds}}" data-field="browseSeconds" type="number" bindinput="onActivityTaskFieldChange" />
+          </view>
+
+          <view class="bn-url-row" wx:if="{{activityForm.taskType === 'purchase'}}">
+            <text class="bn-url-label">最低消费金额</text>
+            <input class="bn-url-input" placeholder="100" value="{{activityForm.taskConfig.minAmount}}" data-field="minAmount" type="digit" bindinput="onActivityTaskFieldChange" />
+          </view>
+
+          <view wx:if="{{activityForm.type === 'coupon'}}">
+            <view class="bn-url-row">
+              <text class="bn-url-label">优惠券类型</text>
+              <view class="filter-tabs" style="display:flex;gap:0;border-radius:10rpx;overflow:hidden">
+                <view class="filter-tab {{activityForm.rewardConfig.couponType === 'fixed' ? 'active' : ''}}" data-field="couponType" data-value="fixed" bindtap="onActivityRewardBtnChange" hover-class="hover" style="flex:1;padding:12rpx">满减</view>
+                <view class="filter-tab {{activityForm.rewardConfig.couponType === 'discount' ? 'active' : ''}}" data-field="couponType" data-value="discount" bindtap="onActivityRewardBtnChange" hover-class="hover" style="flex:1;padding:12rpx">打折</view>
+              </view>
+            </view>
+            <view class="bn-url-row">
+              <text class="bn-url-label">{{activityForm.rewardConfig.couponType === 'fixed' ? '减免金额' : '折扣（如8=8折）'}}</text>
+              <input class="bn-url-input" placeholder="面值" value="{{activityForm.rewardConfig.couponValue}}" data-field="couponValue" type="digit" bindinput="onActivityRewardFieldChange" />
+            </view>
+            <view class="bn-url-row">
+              <text class="bn-url-label">使用门槛（0=无门槛）</text>
+              <input class="bn-url-input" placeholder="0" value="{{activityForm.rewardConfig.minAmount}}" data-field="minAmount" type="digit" bindinput="onActivityRewardFieldChange" />
+            </view>
+            <view class="bn-url-row">
+              <text class="bn-url-label">限定分类</text>
+              <picker class="filter-picker" mode="selector" range="{{allCategories}}" range-key="name" value="{{activityCategoryIndex}}" bindchange="onActivityCategoryPick" style="flex:1;display:flex;align-items:center;font-size:26rpx;color:#1a1a2e">
+                <view style="display:flex;align-items:center;justify-content:space-between;width:100%">
+                  <text style="{{activityCategoryIndex === 0 ? 'color:#8a8a8a' : ''}}">{{activityCategoryText || '全部分类'}}</text>
+                  <text class="picker-arrow">▾</text>
+                </view>
+              </picker>
+            </view>
+            <view class="bn-url-row">
+              <text class="bn-url-label">有效天数</text>
+              <input class="bn-url-input" placeholder="30" value="{{activityForm.rewardConfig.validDays}}" data-field="validDays" type="number" bindinput="onActivityRewardFieldChange" />
+            </view>
+            <view class="bn-url-row">
+              <text class="bn-url-label">总数量（0=不限量）</text>
+              <input class="bn-url-input" placeholder="0" value="{{activityForm.rewardConfig.totalQuantity}}" data-field="totalQuantity" type="number" bindinput="onActivityRewardFieldChange" />
+            </view>
+          </view>
+
+          <view wx:if="{{activityForm.type === 'prize'}}">
+            <view class="bn-url-row">
+              <text class="bn-url-label">奖品名称</text>
+              <input class="bn-url-input" placeholder="奖品名称" value="{{activityForm.rewardConfig.prizeName}}" data-field="prizeName" bindinput="onActivityRewardFieldChange" />
+            </view>
+            <view class="bn-url-row">
+              <text class="bn-url-label">奖品图片</text>
+              <input class="bn-url-input" placeholder="图片URL" value="{{activityForm.rewardConfig.prizeImage}}" data-field="prizeImage" bindinput="onActivityRewardFieldChange" />
+            </view>
+            <view class="bn-url-row">
+              <text class="bn-url-label">奖品数量</text>
+              <input class="bn-url-input" placeholder="奖品总数量" value="{{activityForm.rewardConfig.totalQuantity}}" data-field="totalQuantity" type="number" bindinput="onActivityRewardFieldChange" />
+            </view>
+          </view>
+
+          <view class="bn-url-row">
+            <text class="bn-url-label">开始时间</text>
+            <picker class="filter-picker" mode="multiSelector" range="{{multiStartRange}}" value="{{multiStartIndex}}" bindcolumnchange="onMultiStartColumnChange" style="flex:1;display:flex;align-items:center;font-size:26rpx;color:#1a1a2e">
+              <view style="display:flex;align-items:center;justify-content:space-between;width:100%">
+                <text>{{multiStartRange[0][multiStartIndex[0]]}}-{{multiStartRange[1][multiStartIndex[1]]}}-{{multiStartRange[2][multiStartIndex[2]]}} {{multiStartRange[3][multiStartIndex[3]]}}:{{multiStartRange[4][multiStartIndex[4]]}}</text>
+                <text class="picker-arrow">▾</text>
+              </view>
+            </picker>
+          </view>
+          <view class="bn-url-row">
+            <text class="bn-url-label">结束时间</text>
+            <picker class="filter-picker" mode="multiSelector" range="{{multiEndRange}}" value="{{multiEndIndex}}" bindcolumnchange="onMultiEndColumnChange" style="flex:1;display:flex;align-items:center;font-size:26rpx;color:#1a1a2e">
+              <view style="display:flex;align-items:center;justify-content:space-between;width:100%">
+                <text>{{multiEndRange[0][multiEndIndex[0]]}}-{{multiEndRange[1][multiEndIndex[1]]}}-{{multiEndRange[2][multiEndIndex[2]]}} {{multiEndRange[3][multiEndIndex[3]]}}:{{multiEndRange[4][multiEndIndex[4]]}}</text>
+                <text class="picker-arrow">▾</text>
+              </view>
+            </picker>
+          </view>
+        </view>
+
+        <view class="bn-modal-foot">
+          <view class="bn-btn-cancel" bindtap="onCloseActivityModal" hover-class="hover">取消</view>
+          <view class="bn-btn-save ripple-btn" bindtap="onSaveActivity" hover-class="hover">保存</view>
+        </view>
+      </view>
+    </view>
+
+        <view class="back-top {{showBackTop ? 'show' : ''}}" bindtap="onBackTop" hover-class="hover">
+      <text class="back-top-icon">↑</text>
+      <text class="back-top-label">顶部</text>
+    </view>
+
+  </scroll-view>
+
+  <!-- 轮播图编辑弹窗 -->
+  <view class="bn-mask {{showModal ? 'show' : ''}}" bindtap="onCloseModal">
+    <view class="bn-modal" catchtap="onStop" style="animation: elasticIn 0.4s ease-out">
+      <text class="bn-modal-title">{{editId ? '编辑' : '添加'}}轮播图</text>
+
+      <view class="bn-modal-body">
+        <view class="bn-preview" bindtap="onPreviewImg">
+          <image class="bn-preview-img" wx:if="{{editUrl}}" src="{{editUrl}}" mode="aspectFit" lazy-load="{{true}}" />
+          <text class="bn-preview-empty" wx:if="{{!editUrl}}">暂无图片<br/>点击下方上传</text>
+        </view>
+
+        <view class="bn-upload-btn" bindtap="onUploadImg" hover-class="hover">📷 从手机相册选择</view>
+
+        <view class="bn-url-row">
+          <text class="bn-url-label">或粘贴图片URL</text>
+          <input class="bn-url-input" placeholder="输入图片地址" value="{{editUrl}}" bindinput="onUrlInput" />
+        </view>
+
+        <view class="bn-link-row">
+          <text class="bn-link-label">跳转链接</text>
+          <input class="bn-link-input" placeholder="可选，填写页面路径" value="{{editLink}}" bindinput="onLinkInput" />
+        </view>
+      </view>
+
+      <view class="bn-modal-foot">
+        <view class="bn-btn-cancel" bindtap="onCloseModal" hover-class="hover">取消</view>
+        <view class="bn-btn-save ripple-btn" bindtap="onSave" hover-class="hover">保存</view>
+      </view>
+    </view>
+  </view>
+</view>

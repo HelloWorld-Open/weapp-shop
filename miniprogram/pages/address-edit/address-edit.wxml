@@ -1,0 +1,40 @@
+<view class="page fade-in">
+  <view class="form-card">
+    <view class="form-group {{errors.name ? 'error' : ''}}">
+      <text class="form-label">收货人</text>
+      <input class="form-input" placeholder="请输入收货人姓名" value="{{name}}" bindinput="onNameInput" />
+      <text class="form-error" wx:if="{{errors.name}}">{{errors.name}}</text>
+    </view>
+
+    <view class="form-group {{errors.phone ? 'error' : ''}}">
+      <text class="form-label">手机号码</text>
+      <input class="form-input" placeholder="请输入手机号" type="number" maxlength="11" value="{{phone}}" bindinput="onPhoneInput" />
+      <text class="form-error" wx:if="{{errors.phone}}">{{errors.phone}}</text>
+    </view>
+
+    <view class="form-group {{errors.region ? 'error' : ''}}">
+      <text class="form-label">所在地区</text>
+      <picker class="form-picker" mode="region" value="{{region}}" bindchange="onRegionChange">
+        <text class="picker-text {{regionText ? '' : 'placeholder'}}">{{regionText || '请选择省/市/区'}}</text>
+      </picker>
+      <text class="form-error" wx:if="{{errors.region}}">{{errors.region}}</text>
+    </view>
+
+    <view class="form-group {{errors.detail ? 'error' : ''}}">
+      <text class="form-label">详细地址</text>
+      <input class="form-input" placeholder="街道、门牌号等" value="{{detail}}" bindinput="onDetailInput" />
+      <text class="form-error" wx:if="{{errors.detail}}">{{errors.detail}}</text>
+    </view>
+  </view>
+
+  <view class="switch-card">
+    <view class="switch-row">
+      <text class="switch-label">设为默认地址</text>
+      <switch class="form-switch" color="#ff4757" checked="{{isDefault}}" bindchange="onDefaultChange" />
+    </view>
+  </view>
+
+  <view class="save-btn ripple-btn" bindtap="onSave" hover-class="hover">
+    <text>{{saving ? '保存中...' : '保存'}}</text>
+  </view>
+</view>

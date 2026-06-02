@@ -1,0 +1,45 @@
+<wxs module="util" src="../../utils/format.wxs"/>
+<view class="page fade-in">
+  <view class="page-skeleton" wx:if="{{loading}}">
+    <view class="skeleton-card" wx:for="{{3}}" wx:key="*this">
+      <view class="skeleton skeleton-line" style="width:35%"></view>
+      <view class="skeleton skeleton-line-sm" style="margin-top:12rpx;width:50%"></view>
+      <view class="skeleton skeleton-line" style="width:75%;margin-top:20rpx"></view>
+    </view>
+  </view>
+
+  <view
+    class="address-card card {{item.isDefault ? 'default' : ''}} {{selectMode ? 'selectable' : ''}}" hover-class="hover"
+    wx:for="{{addressList}}"
+    wx:for-item="item"
+    wx:key="_id"
+    data-address="{{item}}"
+    bindtap="onSelect"
+    catchlongpress="onDelete"
+    data-id="{{item._id}}"
+    wx:if="{{!loading}}"
+  >
+    <view class="address-main" bindtap="{{selectMode ? '' : 'onEdit'}}" data-address="{{item}}">
+      <view class="address-top">
+        <text class="address-name">{{item.name}}</text>
+        <text class="address-phone">{{item.phone}}</text>
+        <view class="default-badge" wx:if="{{item.isDefault}}">默认</view>
+      </view>
+      <view class="address-detail-wrap">
+        <text class="address-region">{{util.formatRegion(item.region)}}</text>
+        <text class="address-detail">{{item.detail}}</text>
+      </view>
+    </view>
+
+    <view class="address-actions" wx:if="{{!selectMode}}">
+      <view class="action-btn" bindtap="onSetDefault" data-id="{{item._id}}" wx:if="{{!item.isDefault}}" hover-class="hover">设为默认</view>
+      <view class="action-btn action-delete" bindtap="onDelete" data-id="{{item._id}}" hover-class="hover">删除</view>
+    </view>
+  </view>
+
+  <empty-state text="暂无收货地址" wx:if="{{!loading && addressList.length === 0}}" />
+
+  <view class="bottom-bar" wx:if="{{!selectMode}}">
+    <view class="btn-primary" bindtap="onAdd" hover-class="hover">+ 新增地址</view>
+  </view>
+</view>

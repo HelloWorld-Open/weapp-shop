@@ -1,0 +1,29 @@
+<view class="page fade-in">
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="list-item" wx:for="{{list}}" wx:key="_id" wx:for-index="idx">
+      <view class="item" mark:item="true" bindtap="onProductTap" data-productid="{{item.productId}}">
+        <image class="item-img" src="{{item.productInfo.images && item.productInfo.images[0] || ''}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="item-info">
+          <text class="item-name">{{item.productInfo.name}}</text>
+          <text class="item-price">¥{{item.productInfo.price}}</text>
+          <text class="item-stock" wx:if="{{item.productInfo.stock === 0}}">已售罄</text>
+          <text class="item-sales" wx:else>已售 {{item.productInfo.sales || 0}}</text>
+        </view>
+        <view class="item-actions">
+          <view class="cart-btn" mark:addcart="true" bindtap="onAddToCart" hover-class="hover" data-productid="{{item.productId}}" data-name="{{item.productInfo.name}}" data-image="{{item.productInfo.images && item.productInfo.images[0] || ''}}" data-price="{{item.productInfo.price}}">加入购物车</view>
+          <view class="del-btn" mark:delfav="true" bindtap="onRemoveFavorite" data-id="{{item._id}}" data-productid="{{item.productId}}" hover-class="hover">删除</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <empty-state text="暂无收藏的商品" wx:if="{{!loading && list.length === 0}}" />
+
+  <view class="load-more fade-in" wx:if="{{loading && list.length > 0}}">
+    <text>加载中...</text>
+  </view>
+
+  <view class="load-more slide-up" wx:if="{{!hasMore && list.length > 0}}">
+    <text>— 已经到底了 —</text>
+  </view>
+</view>

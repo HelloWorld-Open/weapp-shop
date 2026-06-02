@@ -1,0 +1,52 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+<view class="page fade-in">
+  <view wx:if="{{loading}}" class="cart-skeleton">
+    <view class="sk-cart-item" wx:for="{{3}}" wx:key="*this">
+      <view class="skeleton" style="width:36rpx;height:36rpx;border-radius:50%;flex-shrink:0"></view>
+      <view class="skeleton" style="width:160rpx;height:160rpx;border-radius:12rpx;flex-shrink:0"></view>
+      <view style="flex:1">
+        <view class="skeleton skeleton-line"></view>
+        <view class="skeleton skeleton-line-sm"></view>
+        <view class="skeleton" style="height:48rpx;width:160rpx;border-radius:6rpx"></view>
+      </view>
+    </view>
+  </view>
+  <view class="cart-list" wx:elif="{{cartList.length > 0}}">
+    <view class="cart-item" wx:for="{{cartList}}" wx:key="_id" data-id="{{item._id}}" hover-class="hover">
+      <view class="select-btn" bindtap="onToggleSelect" data-id="{{item._id}}">
+        <view class="select-circle {{item._selected ? 'selected' : ''}}"></view>
+      </view>
+
+      <image class="item-image" src="{{item.productInfo && item.productInfo.images && item.productInfo.images[0] || ''}}" mode="aspectFill" bindtap="onProductTap" data-id="{{item.productId}}" lazy-load="{{true}}" />
+
+      <view class="item-info">
+        <text class="item-name">{{item.productInfo && item.productInfo.name || ''}}</text>
+        <text class="item-price">¥{{item.productInfo && item.productInfo.price || 0}}</text>
+        <view class="quantity-control">
+          <text class="qty-btn" data-id="{{item._id}}" data-type="minus" bindtap="onQuantityChange" hover-class="hover">−</text>
+          <text class="qty-num">{{item.quantity}}</text>
+          <text class="qty-btn" data-id="{{item._id}}" data-type="plus" bindtap="onQuantityChange" hover-class="hover">+</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <empty-state text="购物车是空的，快去逛逛吧" wx:else />
+
+  <view class="bottom-bar" wx:if="{{cartList.length > 0}}">
+    <view class="all-select" bindtap="onToggleAll">
+      <view class="select-circle {{allSelected ? 'selected' : ''}}"></view>
+      <text>全选</text>
+    </view>
+    <view class="total-info">
+      <text class="total-label">合计: </text>
+      <text class="total-price">{{fmt.price(totalPrice)}}</text>
+    </view>
+    <view class="checkout-btn ripple-btn" bindtap="onCheckout" hover-class="hover">
+      <text>结算({{selectedIds.length}})</text>
+    </view>
+    <view class="delete-btn" bindtap="onDelete">
+      <text>删除</text>
+    </view>
+  </view>
+</view>

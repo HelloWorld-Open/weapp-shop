@@ -1,0 +1,106 @@
+.page {
+  background: #f5f0eb;
+  min-height: 100vh;
+  padding: 24rpx 24rpx 40rpx;
+}
+
+.form-card {
+  background: #faf6f2;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08), 0 12rpx 40rpx rgba(0,0,0,0.06);
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  position: relative;
+  background: transparent;
+}
+
+.form-group + .form-group {
+  border-top: 1rpx solid #f0ece6;
+}
+
+.form-label {
+  width: 150rpx;
+  font-size: 28rpx;
+  color: #1a1a2e;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1a1a2e;
+  height: 48rpx;
+}
+
+.form-picker {
+  flex: 1;
+}
+
+.picker-text {
+  font-size: 28rpx;
+  color: #1a1a2e;
+}
+
+.picker-text.placeholder {
+  color: #7a7a7a;
+}
+
+.switch-card {
+  background: #faf6f2;
+  border-radius: 16rpx;
+  margin-top: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08), 0 12rpx 40rpx rgba(0,0,0,0.06);
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.switch-label {
+  font-size: 28rpx;
+  color: #1a1a2e;
+  font-weight: 500;
+}
+
+.save-btn {
+  margin-top: 60rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  background: linear-gradient(135deg, #ff4757, #ff6348);
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  box-shadow: 0 6rpx 24rpx rgba(255,71,87,0.25);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.save-btn.hover {
+  transform: scale(0.98);
+  box-shadow: 0 3rpx 12rpx rgba(255,71,87,0.15);
+}
+
+.form-group.error {
+  background: #fff5f5;
+}
+
+.form-group.error .form-label {
+  color: #ff4757;
+}
+
+.form-error {
+  position: absolute;
+  right: 24rpx;
+  font-size: 22rpx;
+  color: #ff4757;
+}

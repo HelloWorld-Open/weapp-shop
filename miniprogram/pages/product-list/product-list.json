@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "product-card": "/components/product-card/product-card"
+  },
+  "navigationBarTitleText": "商品列表",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 50
+}

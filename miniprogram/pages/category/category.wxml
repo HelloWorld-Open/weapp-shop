@@ -1,0 +1,43 @@
+<view class="page fade-in">
+  <view class="sidebar">
+    <view
+      class="sidebar-item {{currentIndex === index ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="_id"
+      data-index="{{index}}"
+      bindtap="onCategoryChange"
+    >
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+
+  <scroll-view class="content" scroll-y enhanced show-scrollbar="{{false}}">
+
+    <view class="product-grid" wx:if="{{loading}}">
+      <view wx:for="{{6}}" wx:key="*this">
+        <view class="skeleton sk-cat-img"></view>
+        <view class="skeleton sk-cat-line" style="width:70%;margin-top:12rpx"></view>
+        <view class="skeleton sk-cat-line-sm"></view>
+      </view>
+    </view>
+
+    <view wx:if="{{!loading && categories.length > 0}}">
+      <view class="section-title-bar">
+        <text class="section-cat-name">{{categories[currentIndex].name}}</text>
+        <text class="section-count">{{products.length}}件商品</text>
+      </view>
+      <view class="product-grid">
+        <view
+class="product-item" wx:for="{{products}}" wx:key="_id" data-id="{{item._id}}" bindtap="onProductTap" hover-class="hover">
+          <image class="product-image" src="{{item.images && item.images[0] || ''}}" mode="aspectFill" lazy-load="{{true}}" />
+          <view class="product-info">
+            <text class="product-name">{{item.name}}</text>
+            <text class="product-price">¥{{item.price}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <empty-state text="该分类暂无商品" wx:if="{{!loading && products.length === 0}}" />
+  </scroll-view>
+</view>

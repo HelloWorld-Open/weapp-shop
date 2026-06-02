@@ -1,0 +1,5 @@
+node_modules/
+project.private.config.json
+minitest/
+AGENTS.md
+.DS_Store

@@ -1,0 +1,82 @@
+<wxs module="fmt" src="../../utils/format.wxs" />
+<view class="page fade-in" wx:if="{{order}}">
+  <view class="status-section" style="background: {{(statusMap[order.status] && statusMap[order.status].color) || '#ff4757'}}">
+    <text class="status-icon">{{order.status === 'pending' ? '⏳' : order.status === 'paid' ? '📦' : order.status === 'shipped' ? '🚚' : order.status === 'delivered' ? '✅' : '❌'}}</text>
+    <text class="status-text">{{(statusMap[order.status] && statusMap[order.status].text) || order.status}}</text>
+    <text class="status-order-no">订单号: {{order.orderNo}}</text>
+  </view>
+
+  <view class="address-section">
+    <text class="address-name">{{order.address && order.address.name || ''}} {{order.address && order.address.phone || ''}}</text>
+    <text class="address-detail">{{fmt.formatRegion(order.address && order.address.region)}} {{order.address && order.address.detail || ''}}</text>
+  </view>
+
+  <view class="items-section">
+    <view class="item" wx:for="{{order.items}}" wx:key="productId">
+      <image class="item-image" src="{{item.image || ''}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="item-info">
+        <text class="item-name">{{item.name}}</text>
+        <text class="item-price">¥{{item.price}} × {{item.quantity}}</text>
+      </view>
+      <text class="item-total">{{fmt.price(item.price * item.quantity)}}</text>
+    </view>
+  </view>
+
+  <view class="info-section">
+    <view class="info-row">
+      <text class="info-label">订单编号</text>
+      <text class="info-value">{{order.orderNo}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">创建时间</text>
+      <text class="info-value">{{order.createTimeText}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.payTimeText}}">
+      <text class="info-label">支付时间</text>
+      <text class="info-value">{{order.payTimeText}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.remark}}">
+      <text class="info-label">备注</text>
+      <text class="info-value">{{order.remark}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.discountAmount > 0}}">
+      <text class="info-label">优惠</text>
+      <text class="info-value discount-value">-{{fmt.price(order.discountAmount)}}</text>
+    </view>
+    <view class="info-row total-row">
+      <text class="info-label">{{order.discountAmount > 0 ? '小计' : '合计'}}</text>
+      <text class="info-value total-value">{{fmt.price(order.totalPrice)}}</text>
+    </view>
+    <view class="info-row final-row" wx:if="{{order.discountAmount > 0}}">
+      <text class="info-label final-label">实付</text>
+      <text class="info-value final-value">{{fmt.price(order.finalPrice)}}</text>
+    </view>
+  </view>
+
+  <view class="action-section" wx:if="{{order.status === 'pending' && !isAdminView}}">
+    <view class="action-btn cancel-btn" bindtap="onCancel" hover-class="hover">取消订单</view>
+    <view class="action-btn pay-btn" bindtap="onPay" hover-class="hover">去支付</view>
+  </view>
+
+  <view class="action-section" wx:if="{{order.status === 'shipped' && !isAdminView}}">
+    <view class="action-btn refund-btn" bindtap="onRefund" hover-class="hover">申请退款</view>
+    <view class="action-btn confirm-btn" bindtap="onConfirmReceive" hover-class="hover">确认收货</view>
+  </view>
+
+  <view class="action-section" wx:if="{{order.status === 'paid' && !isAdminView}}">
+    <view class="action-btn refund-btn" bindtap="onRefund" hover-class="hover">申请退款</view>
+  </view>
+
+  <view class="action-section" wx:if="{{order.status === 'refunded' && !isAdminView}}">
+    <view class="action-btn refunded-btn">✅ 已完成退款</view>
+  </view>
+
+  <view class="action-section" wx:if="{{order.status === 'delivered' && !isAdminView}}">
+    <view class="action-btn review-btn" wx:if="{{reviewAvailable}}" bindtap="onReview" hover-class="hover">✎ 去评价</view>
+    <view class="action-btn reviewed-btn" wx:else>✅ 已评价</view>
+  </view>
+</view>
+
+<view class="loading" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>

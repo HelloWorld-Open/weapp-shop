@@ -1,0 +1,96 @@
+<view class="page fade-in">
+    <view class="user-section" wx:if="{{session}}">
+      <view class="avatar-wrap" bindtap="onUploadAvatar" hover-class="hover">
+        <image class="avatar-img" src="{{(userInfo && userInfo.avatarUrl) || session.avatarUrl || ''}}" wx:if="{{userInfo && userInfo.avatarUrl || session.avatarUrl}}" />
+        <text class="avatar-placeholder" wx:else>{{isAdmin ? '🔧' : '👤'}}</text>
+        <view class="avatar-overlay">📷</view>
+      </view>
+      <view class="user-info">
+      <text class="nickname">{{session.nickName || '用户'}}</text>
+      <text class="user-phone">{{isAdmin ? '管理员账号' : (session.phone || '')}}</text>
+    </view>
+  </view>
+
+  <view class="user-section no-login" wx:else>
+    <view class="login-tip" bindtap="onLogin" hover-class="hover">
+      <text class="login-icon">👤</text>
+      <text class="login-text">点击登录/注册</text>
+    </view>
+  </view>
+
+  <view class="order-section" wx:if="{{session && !isAdmin}}">
+    <view class="order-header" bindtap="onOrderTap" data-tab="all" hover-class="hover">
+      <text class="order-title">我的订单</text>
+      <view class="order-more">
+        <text>查看全部</text>
+        <text>›</text>
+      </view>
+    </view>
+
+    <view class="order-actions">
+      <view class="order-action" bindtap="onOrderTap" data-tab="pending" hover-class="hover">
+        <text class="action-icon">⏳</text>
+        <text class="action-label">待付款</text>
+        <text class="action-badge" wx:if="{{orderCounts.pending > 0}}">{{orderCounts.pending}}</text>
+      </view>
+      <view class="order-action" bindtap="onOrderTap" data-tab="paid" hover-class="hover">
+        <text class="action-icon">📦</text>
+        <text class="action-label">待发货</text>
+        <text class="action-badge" wx:if="{{orderCounts.paid > 0}}">{{orderCounts.paid}}</text>
+      </view>
+      <view class="order-action" bindtap="onOrderTap" data-tab="shipped" hover-class="hover">
+        <text class="action-icon">🚚</text>
+        <text class="action-label">待收货</text>
+        <text class="action-badge" wx:if="{{orderCounts.shipped > 0}}">{{orderCounts.shipped}}</text>
+      </view>
+      <view class="order-action" bindtap="onOrderTap" data-tab="delivered" hover-class="hover">
+        <text class="action-icon">✅</text>
+        <text class="action-label">已完成</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="menu-section">
+    <view class="menu-item" wx:if="{{isAdmin}}" bindtap="onEnterAdmin" hover-class="hover">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-label">进入管理后台</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" wx:if="{{session && !isAdmin}}" bindtap="onEditProfile" hover-class="hover">
+      <text class="menu-icon">✏️</text>
+      <text class="menu-label">编辑资料</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" wx:if="{{session && !isAdmin}}" bindtap="onNavigate" data-url="/pages/favorite-list/favorite-list" hover-class="hover">
+      <text class="menu-icon">❤️</text>
+      <text class="menu-label">我的收藏</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" wx:if="{{session && !isAdmin}}" bindtap="onNavigate" data-url="/pages/my-coupons/my-coupons" hover-class="hover">
+      <text class="menu-icon">🎫</text>
+      <text class="menu-label">我的优惠券</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" wx:if="{{session && !isAdmin}}" bindtap="onNavigate" data-url="/pages/my-prizes/my-prizes" hover-class="hover">
+      <text class="menu-icon">🎁</text>
+      <text class="menu-label">我的奖品</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" wx:if="{{session && !isAdmin}}" bindtap="onNavigate" data-url="/pages/address/address" hover-class="hover">
+      <text class="menu-icon">📍</text>
+      <text class="menu-label">收货地址</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" wx:if="{{session}}" bindtap="onLogout" hover-class="hover">
+      <text class="menu-icon">🚪</text>
+      <text class="menu-label logout-text">退出登录</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+</view>

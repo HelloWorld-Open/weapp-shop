@@ -1,0 +1,249 @@
+.page {
+  background: #f5f0eb;
+  min-height: 100vh;
+  padding-bottom: 24rpx;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  padding: 60rpx 40rpx;
+  background: linear-gradient(135deg, #faebd0, #f5e0c8, #edcfa0);
+  color: #4a3a2a;
+  position: relative;
+  overflow: hidden;
+}
+
+.user-section::before {
+  content: '';
+  position: absolute;
+  top: -100rpx;
+  right: -100rpx;
+  width: 400rpx;
+  height: 400rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+}
+
+.user-section::after {
+  content: '';
+  position: absolute;
+  bottom: -60rpx;
+  left: -60rpx;
+  width: 240rpx;
+  height: 240rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+}
+
+.avatar-placeholder {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: rgba(74,58,42,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  flex-shrink: 0;
+  backdrop-filter: blur(4rpx);
+  border: 3rpx solid rgba(74,58,42,0.15);
+}
+
+.avatar-wrap {
+  position: relative;
+  width: 120rpx;
+  height: 120rpx;
+  flex-shrink: 0;
+}
+
+.avatar-img {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 3rpx solid rgba(74,58,42,0.15);
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.avatar-wrap.hover .avatar-overlay {
+  opacity: 1;
+}
+
+.user-info {
+  margin-left: 28rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #3a2a1a;
+}
+
+.user-phone {
+  font-size: 24rpx;
+  color: rgba(58,42,26,0.6);
+  margin-top: 6rpx;
+  display: block;
+}
+
+.no-login {
+  display: flex;
+  justify-content: center;
+}
+
+.login-tip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+}
+
+.login-icon {
+  font-size: 80rpx;
+}
+
+.login-text {
+  font-size: 28rpx;
+  color: rgba(58,42,26,0.7);
+  margin-top: 12rpx;
+}
+
+.logout-text {
+  color: #ff4757;
+}
+
+.order-section {
+  background: #faf6f2;
+  margin: 24rpx 20rpx;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  border: none;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08), 0 12rpx 40rpx rgba(0,0,0,0.06);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0ece6;
+}
+
+.order-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.order-more {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  font-size: 24rpx;
+  color: #6a6a6a;
+}
+
+.order-actions {
+  display: flex;
+  padding-top: 24rpx;
+}
+
+.order-action {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: transform 0.15s;
+}
+
+.order-action.hover {
+  transform: scale(0.90);
+}
+
+.action-icon {
+  font-size: 48rpx;
+  margin-bottom: 8rpx;
+}
+
+.action-label {
+  font-size: 24rpx;
+  color: #6c6c7a;
+  font-weight: 500;
+}
+
+.action-badge {
+  position: absolute;
+  top: -8rpx;
+  right: 20%;
+  background: #ff4757;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 2rpx 14rpx;
+  border-radius: 20rpx;
+  min-width: 28rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 8rpx rgba(255,71,87,0.25);
+}
+
+.menu-section {
+  background: #ffffff;
+  margin: 0 20rpx 24rpx;
+  border-radius: 20rpx;
+  border: none;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.04), 0 8rpx 24rpx rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  border-bottom: 1rpx solid #f0ece6;
+  transition: background 0.15s;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item.hover {
+  background: #faf6f2;
+}
+
+.menu-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+  width: 40rpx;
+  text-align: center;
+}
+
+.menu-label {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1a1a2e;
+}
+
+.menu-arrow {
+  font-size: 32rpx;
+  color: #8a8a8a;
+}

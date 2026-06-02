@@ -1,0 +1,5 @@
+<view class="empty-state">
+  <image class="empty-image" src="{{image}}" mode="aspectFit" wx:if="{{image}}" />
+  <image class="empty-image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23f5f5f5'/%3E%3C/svg%3E" mode="aspectFit" wx:else />
+  <text class="empty-text">{{text}}</text>
+</view>

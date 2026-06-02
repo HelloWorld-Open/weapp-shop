@@ -1,0 +1,158 @@
+.page {
+  background: #f5f0eb;
+  min-height: 100vh;
+  padding: 0 0 40rpx;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 0 40rpx;
+  background: linear-gradient(135deg, #faebd0, #f5e0c8, #edcfa0);
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-header::before {
+  content: '';
+  position: absolute;
+  top: -100rpx;
+  right: -100rpx;
+  width: 400rpx;
+  height: 400rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+}
+
+.profile-header::after {
+  content: '';
+  position: absolute;
+  bottom: -60rpx;
+  left: -60rpx;
+  width: 240rpx;
+  height: 240rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+}
+
+.avatar-wrap {
+  position: relative;
+  width: 140rpx;
+  height: 140rpx;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.avatar-img {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4rpx solid rgba(74,58,42,0.15);
+}
+
+.avatar-placeholder {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: rgba(74,58,42,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64rpx;
+  border: 4rpx solid rgba(74,58,42,0.15);
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.avatar-wrap.hover .avatar-overlay {
+  opacity: 1;
+}
+
+.change-hint {
+  font-size: 22rpx;
+  color: rgba(58,42,26,0.5);
+  margin-top: 12rpx;
+  z-index: 1;
+}
+
+.upload-status {
+  font-size: 24rpx;
+  color: #ff4757;
+  margin-top: 8rpx;
+  text-align: center;
+  font-weight: 500;
+}
+
+.form-card {
+  background: #faf6f2;
+  margin: 24rpx 24rpx 0;
+  border-radius: 16rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08), 0 12rpx 40rpx rgba(0,0,0,0.06);
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+}
+
+.form-group + .form-group {
+  border-top: 1rpx solid #f0ece6;
+}
+
+.form-label {
+  width: 120rpx;
+  font-size: 28rpx;
+  color: #1a1a2e;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1a1a2e;
+  height: 48rpx;
+}
+
+.form-value {
+  flex: 1;
+  font-size: 28rpx;
+  color: #8c8c9a;
+}
+
+.save-btn {
+  margin: 60rpx 24rpx 0;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  background: linear-gradient(135deg, #ff4757, #ff6348);
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  box-shadow: 0 6rpx 24rpx rgba(255,71,87,0.25);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.save-btn.hover {
+  transform: scale(0.98);
+  box-shadow: 0 3rpx 12rpx rgba(255,71,87,0.15);
+}

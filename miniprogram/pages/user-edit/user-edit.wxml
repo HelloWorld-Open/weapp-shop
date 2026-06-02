@@ -1,0 +1,25 @@
+<view class="page fade-in">
+  <view class="profile-header">
+    <view class="avatar-wrap" bindtap="onUploadAvatar" hover-class="hover">
+      <image class="avatar-img" src="{{avatarUrl || '../../images/default-avatar.png'}}" />
+      <view class="avatar-overlay">📷</view>
+    </view>
+    <text class="change-hint">点击更换头像</text>
+  </view>
+
+  <view class="form-card">
+    <view class="form-group">
+      <text class="form-label">昵　称</text>
+      <input class="form-input" placeholder="请输入昵称" value="{{nickName}}" bindinput="onNicknameInput" maxlength="20" />
+    </view>
+
+    <view class="form-group form-group-readonly">
+      <text class="form-label">手机号</text>
+      <text class="form-value">{{phone || '未绑定'}}</text>
+    </view>
+  </view>
+
+  <view class="save-btn ripple-btn" bindtap="onSave" hover-class="hover">
+    <text>{{saving ? '保存中...' : '保存'}}</text>
+  </view>
+</view>

@@ -1,0 +1,73 @@
+<view class="page">
+  <view wx:if="{{loading}}" class="skeleton-wrap">
+    <view class="sk-cover"></view>
+    <view class="sk-card"></view>
+    <view class="sk-card"></view>
+  </view>
+
+  <scroll-view wx:else scroll-y class="scroll" enhanced show-scrollbar="{{false}}">
+
+    <view class="cover-wrap">
+      <image class="cover-img" src="{{activity.image || 'https://picsum.photos/seed/activity/750/400'}}" mode="aspectFill" />
+      <view class="cover-mask"></view>
+      <view class="cover-info">
+        <text class="cover-title">{{activity.title}}</text>
+        <text class="cover-desc">{{activity.description || '精彩活动，等你参与'}}</text>
+        <view class="cover-tags">
+          <text class="c-tag {{activity.type}}">{{activity.type === 'coupon' ? '🎫 优惠券' : '🎁 实物奖品'}}</text>
+          <text class="c-tag {{activity.taskType}}">{{activity.taskType === 'browse' ? '👀 浏览任务' : '🛒 消费任务'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="countdown-bar">
+      <text class="cd-icon">{{startCountdown ? '⏳' : '⏰'}}</text>
+      <text class="cd-text" wx:if="{{startCountdown}}">距开始 {{startCountdown}}</text>
+      <text class="cd-text" wx:elif="{{endCountdown}}">距结束 {{endCountdown}}</text>
+      <text class="cd-text" wx:else>活动已结束</text>
+    </view>
+
+    <view class="task-card">
+      <text class="card-title">📋 任务要求</text>
+      <text class="task-desc">{{activity.taskType === 'browse' ? '浏览商品至少 ' + (activity.taskConfig.browseSeconds || 60) + ' 秒' : '累计消费满 ¥' + (activity.taskConfig.minAmount || 100) + ' 即可领取奖励'}}</text>
+
+      <view class="task-action" wx:if="{{!userActivity}}">
+        <text class="task-tip">💡 完成任务即可领取奖励，快来参与吧</text>
+      </view>
+    </view>
+
+    <view class="reward-card" wx:if="{{activity.type === 'coupon'}}">
+      <text class="card-title">🎫 奖励预览</text>
+      <view class="coupon-box">
+        <view class="coupon-rip">
+          <view class="coupon-bg"></view>
+          <view class="coupon-body">
+            <text class="cb-value">{{activity.rewardConfig.couponType === 'fixed' ? '¥' + activity.rewardConfig.couponValue : activity.rewardConfig.couponValue + '折'}}</text>
+            <text class="cb-cond">{{activity.rewardConfig.minAmount > 0 ? '满¥' + activity.rewardConfig.minAmount + '可用' : '无门槛'}}</text>
+            <text class="cb-valid">有效期 {{activity.rewardConfig.validDays || 30}} 天</text>
+            <text class="cb-cat">{{activity.rewardConfig.categoryId ? '指定分类可用' : '全场通用'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="reward-card" wx:if="{{activity.type === 'prize'}}">
+      <text class="card-title">🎁 奖品预览</text>
+      <view class="prize-box">
+        <image class="prize-img" src="{{activity.rewardConfig.prizeImage || 'https://picsum.photos/seed/prizebox/260/260'}}" mode="aspectFill" />
+        <text class="prize-name">{{activity.rewardConfig.prizeName || '精美奖品'}}</text>
+        <text class="prize-qty" wx:if="{{activity.rewardConfig.totalQuantity > 0}}">剩余 {{activity.rewardConfig.totalQuantity - (activity.claimedCount || 0)}} / {{activity.rewardConfig.totalQuantity}} 份</text>
+      </view>
+    </view>
+
+  </scroll-view>
+
+  <view class="bottom-bar">
+    <view class="bb-left">
+      <text class="bb-label">{{barLabel}}</text>
+    </view>
+    <view class="bb-btn {{btnDisabled ? '' : 'active'}}" style="background:{{barColor}}" bindtap="onBottomBtnTap" hover-class="{{btnDisabled ? '' : 'hover'}}">
+      <text>{{btnText}}</text>
+    </view>
+  </view>
+</view>

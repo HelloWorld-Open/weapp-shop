@@ -1,0 +1,75 @@
+{
+  "lazyCodeLoading": "requiredComponents",
+  "pages": [
+    "pages/index/index",
+    "pages/category/category",
+    "pages/product-list/product-list",
+    "pages/product-detail/product-detail",
+    "pages/cart/cart",
+    "pages/order-confirm/order-confirm",
+    "pages/order-list/order-list",
+    "pages/order-detail/order-detail",
+    "pages/user/user",
+    "pages/login/login",
+    "pages/address/address",
+    "pages/address-edit/address-edit",
+    "pages/user-edit/user-edit",
+    "pages/favorite-list/favorite-list",
+    "pages/review-edit/review-edit",
+    "pages/activity-detail/activity-detail",
+    "pages/my-coupons/my-coupons",
+    "pages/my-prizes/my-prizes"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/admin",
+      "pages": [
+        "admin",
+        "product-edit/product-edit"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "优选商城",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f0eb"
+  },
+  "tabBar": {
+    "color": "#a0928a",
+    "selectedColor": "#c97b63",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "iconPath": "images/tab-category.png",
+        "selectedIconPath": "images/tab-category-active.png",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "iconPath": "images/tab-cart.png",
+        "selectedIconPath": "images/tab-cart-active.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "images/tab-user.png",
+        "selectedIconPath": "images/tab-user-active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {
+    "product-card": "components/product-card/product-card",
+    "empty-state": "components/empty-state/empty-state"
+  },
+  "sitemapLocation": "sitemap.json"
+}

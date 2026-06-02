@@ -1,0 +1,8 @@
+{
+  "name": "shopping-mall",
+  "version": "1.0.0",
+  "description": "优选商城小程序",
+  "dependencies": {
+    "@babel/runtime": "^7.26.0"
+  }
+}

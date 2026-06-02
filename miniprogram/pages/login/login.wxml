@@ -1,0 +1,44 @@
+<view class="page fade-in">
+  <view class="brand-bar">
+    <text class="brand-text">🛍️ 优选商城</text>
+  </view>
+
+  <view class="hero-section">
+    <text class="hero-title" wx:if="{{tabIndex === 0}}">欢迎回来</text>
+    <text class="hero-title" wx:if="{{tabIndex === 1}}">管理员登录</text>
+    <text class="hero-sub" wx:if="{{tabIndex === 0}}">登录后享受更完善的购物体验</text>
+  </view>
+
+  <view class="form-section" wx:if="{{tabIndex === 0}}">
+    <view class="input-group">
+      <text class="input-icon">📱</text>
+      <input class="form-input" type="number" maxlength="11" placeholder="输入11位手机号" value="{{phone}}" bindinput="onPhoneInput" />
+    </view>
+    <button class="submit-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onUserLogin" hover-class="hover">
+      {{submitting ? '登录中...' : '登录 / 注册'}}
+    </button>
+  </view>
+
+  <view class="form-section" wx:if="{{tabIndex === 1}}">
+    <view class="input-group">
+      <text class="input-icon">👤</text>
+      <input class="form-input" placeholder="管理员用户名" value="{{adminUsername}}" bindinput="onAdminUsernameInput" />
+    </view>
+    <view class="input-group">
+      <text class="input-icon">🔒</text>
+      <input class="form-input" type="password" placeholder="管理员密码" value="{{adminPassword}}" bindinput="onAdminPasswordInput" />
+    </view>
+    <view class="form-tip">预设账号: admin / admin123</view>
+    <button class="submit-btn admin-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onAdminLogin" hover-class="hover">
+      {{submitting ? '登录中...' : '管理员登录'}}
+    </button>
+  </view>
+
+  <view class="footer-section">
+    <view class="switch-link" bindtap="onTabChange" data-index="{{tabIndex === 0 ? 1 : 0}}" hover-class="hover">
+      <text wx:if="{{tabIndex === 0}}">管理员登录 ›</text>
+      <text wx:if="{{tabIndex === 1}}">返回用户登录 ›</text>
+    </view>
+    <view class="brand-footer">优选商城</view>
+  </view>
+</view>

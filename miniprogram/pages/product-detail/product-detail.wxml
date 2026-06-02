@@ -1,0 +1,106 @@
+<view class="page fade-in" wx:if="{{product}}">
+  <view class="browse-bar" wx:if="{{browseActive}}">
+    <text class="browse-icon">{{browseCompleted ? '✅' : '🎯'}}</text>
+    <view class="browse-track">
+      <view class="browse-fill" style="width:{{browsePercent}}%;background:{{browseCompleted ? '#2ed573' : '#ff4757'}}"></view>
+    </view>
+    <text class="browse-text">{{browseCompleted ? '完成！返回领取奖励' : browseTotal + '秒/' + browseTarget + '秒'}}</text>
+  </view>
+  <swiper class="image-swiper" autoplay circular indicator-dots indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#fff">
+    <swiper-item wx:for="{{product.images || []}}" wx:key="*this">
+      <image class="swiper-img img-fade-in" src="{{item}}" mode="aspectFit" lazy-load="{{true}}" />
+    </swiper-item>
+  </swiper>
+
+  <view class="info-section slide-up">
+    <view class="price-row">
+      <text class="price">¥{{product.price}}</text>
+      <text class="original-price" wx:if="{{product.originalPrice}}">¥{{product.originalPrice}}</text>
+      <text class="discount-tag" wx:if="{{product.originalPrice}}">折扣</text>
+    </view>
+    <text class="name">{{product.name}}</text>
+    <view class="meta-row">
+      <text class="sales">⏱ 已售 {{product.sales || 0}}</text>
+      <text class="stock">📦 库存 {{product.stock}}</text>
+    </view>
+  </view>
+
+  <view class="desc-section slide-up delay-1">
+    <text class="desc-title">商品描述</text>
+    <text class="desc-content">{{product.description}}</text>
+  </view>
+
+  <view class="review-section slide-up delay-2">
+    <text class="desc-title">商品评价</text>
+    <view class="review-summary" wx:if="{{reviewStats.totalReviews > 0}}">
+      <view class="summary-left">
+        <text class="avg-rating">{{reviewStats.avgRating}}</text>
+        <view class="summary-stars">
+          <text class="s-star {{index < Math.round(reviewStats.avgRating) ? 'active' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:key="*this">★</text>
+        </view>
+        <text class="summary-count">{{reviewStats.totalReviews}} 条评价</text>
+      </view>
+      <view class="summary-right">
+        <view class="dist-row" wx:for="{{[5,4,3,2,1]}}" wx:key="*this">
+          <text class="dist-label">{{item}}分</text>
+          <view class="dist-track">
+            <view class="dist-fill" style="width:{{reviewStats.totalReviews > 0 ? (reviewStats.distribution[item] / reviewStats.totalReviews * 100) : 0}}%"></view>
+          </view>
+          <text class="dist-count">{{reviewStats.distribution[item]}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="no-review" wx:else>
+      <text class="no-review-icon">📝</text>
+      <text class="no-review-text">暂无评价</text>
+      <text class="no-review-hint">成为第一个评价的人</text>
+    </view>
+
+    <view class="review-list" wx:if="{{reviewList.length > 0}}">
+      <view class="review-item" wx:for="{{reviewList}}" wx:key="_id">
+        <view class="review-user">
+          <view class="review-avatar-wrap" wx:if="{{!item.avatarUrl}}">
+            <view class="review-avatar-letter {{item.avatarColor}}">{{item.avatarText}}</view>
+          </view>
+          <image class="review-avatar-img" wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill" />
+          <text class="review-nickname">{{item.nickName || '用户'}}</text>
+          <view class="review-user-stars">
+            <text class="us-star {{index < item.rating ? 'active' : ''}}" wx:for="{{[1,2,3,4,5]}}" wx:for-item="star" wx:key="*this">★</text>
+          </view>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+        <view class="review-images" wx:if="{{item.images && item.images.length > 0}}">
+          <image class="review-img" wx:for="{{item.images}}" wx:key="*this" src="{{item}}" mode="aspectFill" bindtap="onPreviewImage" data-url="{{item}}" />
+        </view>
+        <text class="review-time">🕐 {{item.createTimeText}}</text>
+      </view>
+    </view>
+    <view class="review-loading" wx:if="{{reviewLoading}}">
+      <text>加载中…</text>
+    </view>
+    <view class="review-no-more" wx:elif="{{reviewList.length > 0 && !reviewHasMore}}">
+      <text>— 没有更多了 —</text>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="bar-btn favorite-btn {{favorited ? 'active' : ''}}" bindtap="onFavoriteTap" hover-class="hover">
+      <text>{{favorited ? '❤️ 已收藏' : '🤍 收藏'}}</text>
+    </view>
+    <view class="bar-btn cart-btn" bindtap="onAddToCart" hover-class="hover">
+      <text>加入购物车</text>
+    </view>
+    <view class="bar-btn buy-btn" bindtap="onBuyNow" hover-class="hover">
+      <text>立即购买</text>
+    </view>
+  </view>
+</view>
+
+<view class="page-skeleton" wx:if="{{loading}}">
+  <view class="skeleton sk-pd-swiper"></view>
+  <view class="skeleton" style="height:200rpx;margin:20rpx;border-radius:20rpx"></view>
+  <view class="skeleton" style="height:160rpx;margin:0 20rpx;border-radius:20rpx"></view>
+</view>
+<view class="page-empty" wx:elif="{{!loading && !product}}">
+  <empty-state text="该商品已下架或不存在" />
+</view>

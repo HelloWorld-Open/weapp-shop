@@ -1,0 +1,86 @@
+<wxs module="hl" src="../../utils/highlight.wxs" />
+
+<view class="page fade-in">
+  <view class="search-bar" wx:if="{{!categoryId}}">
+    <input class="search-input" placeholder="搜索商品" value="{{keyword}}" bindinput="onSearchInput" bindconfirm="onSearch" bindfocus="onSearchFocus" bindblur="onSearchBlur" />
+    <text class="search-btn" bindtap="onSearch">搜索</text>
+
+    <view class="suggest-dropdown {{showSuggestions ? 'show' : ''}}" wx:if="{{suggestions.length > 0}}">
+      <view class="suggest-item" wx:for="{{suggestions}}" wx:key="_id" data-id="{{item._id}}" data-name="{{item.name}}" bindtap="onSelectSuggestion">
+        <image class="suggest-img" src="{{item.images && item.images[0] || ''}}" mode="aspectFill" />
+        <text class="suggest-name">{{item.name}}</text>
+      </view>
+    </view>
+
+    <view class="search-dropdown {{showSearchPanel ? 'show' : ''}}" wx:if="{{showSearchPanel && (searchHistory.length > 0 || hotKeywords.length > 0)}}">
+      <view class="history-section" wx:if="{{searchHistory.length > 0}}">
+        <view class="history-header">
+          <text class="history-title">最近搜索</text>
+          <text class="history-clear" bindtap="clearSearchHistory">清空</text>
+        </view>
+        <view class="history-tags">
+          <view class="history-tag" wx:for="{{searchHistory}}" wx:key="*this" data-keyword="{{item}}" bindtap="onTapHistory">
+            <text class="history-tag-text">{{item}}</text>
+            <text class="history-tag-x" data-index="{{index}}" catchtap="removeSearchHistory">×</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="hot-section" wx:if="{{hotKeywords.length > 0}}">
+        <view class="hot-label">热门搜索</view>
+        <view class="hot-tags">
+          <text class="hot-tag" wx:for="{{hotKeywords}}" wx:key="index" data-keyword="{{item.keyword}}" bindtap="onTapHotKeyword">{{item.keyword}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="sort-bar slide-up">
+    <view
+      class="sort-item {{sort === item.value ? 'active' : ''}}"
+      wx:for="{{sortOptions}}"
+      wx:key="value"
+      data-value="{{item.value}}"
+      bindtap="onSortChange"
+    >
+      {{item.label}}
+    </view>
+  </view>
+
+  <view class="product-list" wx:if="{{loading && products.length === 0}}">
+    <view wx:for="{{4}}" wx:key="*this">
+      <view class="skeleton sk-pl-img"></view>
+      <view class="skeleton sk-pl-line" style="width:75%;margin-top:10rpx"></view>
+      <view class="skeleton sk-pl-line-sm"></view>
+    </view>
+  </view>
+
+  <view class="product-list" wx:if="{{products.length > 0}}">
+    <view
+      class="product-item"
+      wx:for="{{products}}"
+      wx:key="_id"
+    >
+      <product-card product="{{item}}" favorited="{{favoriteMap[item._id] || false}}" keyword="{{keyword}}" fromActivityId="{{fromActivityId}}" browseTarget="{{browseTarget}}" />
+    </view>
+  </view>
+
+  <view wx:if="{{noResults}}" class="empty-guide">
+    <text class="empty-guide-icon">🔍</text>
+    <text class="empty-guide-text">未找到"{{keyword}}"相关商品</text>
+    <text class="empty-guide-tip">试试其他关键词</text>
+  </view>
+
+  <view class="load-more fade-in" wx:if="{{loading && products.length > 0}}">
+    <text>加载中...</text>
+  </view>
+
+  <view class="load-more slide-up" wx:if="{{!hasMore && products.length > 0}}">
+    <text>— 已经到底了 —</text>
+  </view>
+</view>
+
+<view class="back-top {{showBackTop ? 'show' : ''}}" bindtap="onBackTop">
+  <text class="back-top-icon">↑</text>
+  <text class="back-top-label">顶部</text>
+</view>

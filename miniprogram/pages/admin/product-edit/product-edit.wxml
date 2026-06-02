@@ -1,0 +1,103 @@
+<view class="page fade-in">
+  <view class="section slide-up">
+    <view class="section-header">
+      <text class="section-title">基本信息</text>
+    </view>
+    <view class="card">
+      <view class="form-group">
+        <text class="label">商品名称 <text class="required">*</text></text>
+        <input class="input" placeholder="请输入商品名称" value="{{name}}" bindinput="onNameInput" />
+      </view>
+      <view class="form-group">
+        <text class="label">商品描述</text>
+        <input class="input" placeholder="请输入商品描述" value="{{description}}" bindinput="onDescInput" />
+      </view>
+      <view class="form-group">
+        <text class="label">分类 <text class="required">*</text></text>
+        <picker class="picker" mode="selector" range="{{categories}}" range-key="name" value="{{categoryIndex}}" bindchange="onCategoryChange">
+          <text class="picker-text {{categories[categoryIndex] ? '' : 'placeholder'}}">{{categories[categoryIndex] && categories[categoryIndex].name || '请选择分类'}}</text>
+          <text class="picker-arrow">›</text>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <view class="section slide-up delay-1">
+    <view class="section-header">
+      <text class="section-title">价格与库存</text>
+    </view>
+    <view class="card">
+      <view class="form-row">
+        <view class="form-group half">
+          <text class="label">价格 <text class="required">*</text></text>
+          <input class="input" type="digit" placeholder="0.00" value="{{price}}" bindinput="onPriceInput" />
+        </view>
+        <view class="form-group half">
+          <text class="label">原价</text>
+          <input class="input" type="digit" placeholder="0.00" value="{{originalPrice}}" bindinput="onOriginalPriceInput" />
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="label">库存 <text class="required">*</text></text>
+        <input class="input" type="number" placeholder="请输入库存" value="{{stock}}" bindinput="onStockInput" />
+      </view>
+    </view>
+  </view>
+
+  <view class="section slide-up delay-2">
+    <view class="section-header">
+      <text class="section-title">商品媒体</text>
+    </view>
+    <view class="card">
+      <view class="img-section">
+        <view class="img-preview-wrap" wx:if="{{image}}" bindtap="onPreviewImage">
+          <image class="img-thumb" src="{{image}}" mode="aspectFill" binderror="onImageError" lazy-load="{{true}}" />
+          <view class="img-preview-overlay">
+            <text>点击预览</text>
+          </view>
+        </view>
+        <view class="img-upload-zone {{image ? '' : 'empty'}}" bindtap="{{image ? '' : 'onChooseImage'}}" hover-class="hover">
+          <view class="img-upload-inner">
+            <text class="upload-icon" wx:if="{{!image}}">📷</text>
+            <text class="upload-text" wx:if="{{!image}}">点击上传商品图片</text>
+            <text class="upload-hint" wx:if="{{!image}}">支持 JPG / PNG 格式</text>
+            <view class="img-choose-btn ripple-btn" wx:if="{{image}}" bindtap="onChooseImage" hover-class="hover">📷 重新选择</view>
+          </view>
+        </view>
+      </view>
+      <view class="img-url-row">
+        <text class="img-url-label">或粘贴图片链接</text>
+        <input class="img-url-input" placeholder="输入图片URL" value="{{image}}" bindinput="onImageInput" />
+      </view>
+    </view>
+  </view>
+
+  <view class="section slide-up delay-3">
+    <view class="section-header">
+      <text class="section-title">商品标签</text>
+    </view>
+    <view class="card">
+      <view class="switch-item">
+        <view class="switch-label-wrap">
+          <text class="switch-label">热销推荐</text>
+          <text class="switch-desc">在首页热销推荐区展示</text>
+        </view>
+        <switch color="#c97b63" checked="{{isHot}}" bindchange="onHotChange" />
+      </view>
+      <view class="switch-item">
+        <view class="switch-label-wrap">
+          <text class="switch-label">新品首发</text>
+          <text class="switch-desc">在首页新品首发区展示</text>
+        </view>
+        <switch color="#c97b63" checked="{{isNew}}" bindchange="onNewChange" />
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="save-btn ripple-btn" bindtap="onSave" hover-class="hover">
+      <text wx:if="{{!saving}}">保存商品</text>
+      <text wx:if="{{saving}}">保存中...</text>
+    </view>
+  </view>
+</view>

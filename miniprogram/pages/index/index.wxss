@@ -1,0 +1,280 @@
+.page {
+  height: 100vh;
+  background: #f5f0eb;
+}
+
+.banner {
+  margin: 20rpx 20rpx 0;
+  border-radius: 20rpx;
+  overflow: hidden;
+  height: 320rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08), 0 8rpx 24rpx rgba(0,0,0,0.06);
+  position: relative;
+}
+
+.banner-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 20rpx;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin: 24rpx 30rpx;
+  padding: 22rpx 32rpx;
+  background: #faf6f2;
+  border-radius: 50rpx;
+  border: none;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08), 0 12rpx 40rpx rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.search-bar.hover {
+  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.10), 0 20rpx 60rpx rgba(0,0,0,0.08);
+  border: 1rpx solid #c97b63;
+}
+
+.search-icon {
+  font-size: 28rpx;
+  margin-right: 12rpx;
+}
+
+.search-text {
+  font-size: 28rpx;
+  color: #7a7a7a;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24rpx;
+  padding: 28rpx 30rpx;
+  background: #faf6f2;
+  margin: 0 24rpx;
+  border-radius: 20rpx;
+  border: none;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08), 0 12rpx 40rpx rgba(0,0,0,0.06);
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12rpx 0;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.category-item.hover {
+  transform: scale(0.92);
+}
+
+.category-icon {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #faf6f2, #f0ece6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
+}
+
+.category-name {
+  font-size: 24rpx;
+  color: #6c6c7a;
+  margin-top: 14rpx;
+  font-weight: 500;
+}
+
+.section {
+  margin: 32rpx 24rpx 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1a1a2e;
+  letter-spacing: 0.5rpx;
+}
+
+.section-more {
+  font-size: 26rpx;
+  color: #6a6a6a;
+  padding: 8rpx 0;
+  transition: color 0.2s ease;
+}
+
+.section-more.hover {
+  color: #c97b63;
+}
+
+.product-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.product-scroll-inner {
+  display: inline-flex;
+  gap: 20rpx;
+}
+
+.product-scroll-item {
+  display: inline-block;
+  width: 300rpx;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+}
+
+.product-grid-item {
+  width: 100%;
+}
+
+.activity-section { margin: 20rpx 24rpx 0; padding: 20rpx; background: linear-gradient(135deg,#fff5f5,#fff0f0); border-radius: 20rpx; box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.06) }
+.activity-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12rpx }
+.activity-title { font-size: 30rpx; font-weight: 700; color: #1a1a2e }
+.activity-more { font-size: 24rpx; color: #ff4757 }
+.activity-swiper { width: 100%; height: 220rpx }
+.activity-card { border-radius: 14rpx; overflow: hidden; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06); transition: transform 0.2s; position: relative; height: 220rpx }
+.activity-card.hover { transform: scale(0.96) }
+.activity-img { width: 100%; height: 100%; position: absolute; top: 0; left: 0 }
+.activity-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 120rpx; background: linear-gradient(transparent, rgba(0,0,0,0.55)) }
+.activity-countdown { position: absolute; top: 12rpx; right: 12rpx; padding: 4rpx 14rpx; border-radius: 16rpx; font-size: 20rpx; font-weight: 600; color: #fff; background: rgba(255,71,87,0.85); backdrop-filter: blur(4px) }
+.activity-card-info { position: absolute; bottom: 12rpx; left: 14rpx; right: 14rpx; display: flex; align-items: center; gap: 10rpx }
+.activity-card-title { font-size: 24rpx; font-weight: 700; color: #fff; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1rpx 4rpx rgba(0,0,0,0.3) }
+.activity-card-type { font-size: 20rpx; font-weight: 500; color: rgba(255,255,255,0.9); padding: 2rpx 12rpx; border-radius: 10rpx; background: rgba(255,255,255,0.15); backdrop-filter: blur(4px); white-space: nowrap }
+
+.skeleton-wrap {
+  padding: 0;
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20rpx;
+  padding: 20rpx 30rpx;
+  margin: 0 30rpx 20rpx;
+}
+
+.skeleton-icon {
+  height: 80rpx;
+  border-radius: 50%;
+}
+
+.sk-banner {
+  height: 340rpx;
+  border-radius: 0;
+  margin-bottom: 20rpx;
+}
+
+.sk-search {
+  height: 80rpx;
+  margin: 0 30rpx 30rpx;
+  border-radius: 40rpx;
+}
+
+.rank-list {
+  background: #faf6f2;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08), 0 12rpx 40rpx rgba(0,0,0,0.06);
+}
+
+.rank-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  border-bottom: 1rpx solid #f0ece6;
+  transition: background 0.15s;
+}
+
+.rank-item:last-child {
+  border-bottom: none;
+}
+
+.rank-item.hover {
+  background: #f0ece6;
+}
+
+.rank-num {
+  width: 48rpx;
+  height: 48rpx;
+  line-height: 48rpx;
+  text-align: center;
+  font-size: 26rpx;
+  font-weight: 700;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.rank-num-1 {
+  background: linear-gradient(135deg, #ffd700, #ffb300);
+  color: #fff;
+}
+
+.rank-num-2 {
+  background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+  color: #fff;
+}
+
+.rank-num-3 {
+  background: linear-gradient(135deg, #cd7f32, #b8860b);
+  color: #fff;
+}
+
+.rank-num-normal {
+  background: #e8e0d8;
+  color: #6a6a6a;
+}
+
+.rank-img {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+  background: #f0ece6;
+}
+
+.rank-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.rank-name {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #1a1a2e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rank-price {
+  font-size: 24rpx;
+  color: #b8654c;
+  font-weight: 600;
+}
+
+.rank-count {
+  font-size: 24rpx;
+  color: #888;
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}

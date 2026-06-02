@@ -1,0 +1,20 @@
+<wxs module="hl" src="../../utils/highlight.wxs" />
+
+<view class="product-card" mark:card="true" bindtap="onTap" hover-class="hover">
+  <view class="product-image-wrap">
+    <image class="product-image img-fade-in" src="{{product.images && product.images[0] || ''}}" mode="aspectFill" lazy-load="{{true}}" />
+  </view>
+  <view class="favorite-btn {{localFavorited ? 'active' : ''}}" mark:fav="true" bindtap="onFavoriteTap" hover-class="hover">
+    <text class="heart-icon">{{localFavorited ? '❤️' : '🤍'}}</text>
+  </view>
+  <view class="product-info">
+    <text class="product-name">
+      <text wx:for="{{hl.segments(product.name, keyword)}}" wx:key="*this" class="{{item.highlight ? 'highlight' : ''}}">{{item.text}}</text>
+    </text>
+    <view class="product-price-row">
+      <text class="product-price">¥{{product.price}}</text>
+      <text class="product-original-price" wx:if="{{product.originalPrice}}">¥{{product.originalPrice}}</text>
+    </view>
+    <text class="product-sales">已售 {{product.sales || 0}}</text>
+  </view>
+</view>

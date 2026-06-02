@@ -1,0 +1,33 @@
+function escapeRegExp(str) {
+  var result = ''
+  for (var i = 0; i < str.length; i++) {
+    var ch = str[i]
+    if ('.*+?^${}()|[]\\'.indexOf(ch) >= 0) {
+      result += '\\' + ch
+    } else {
+      result += ch
+    }
+  }
+  return result
+}
+
+function segments(text, keyword) {
+  if (!keyword || !text) return [{ text: text, highlight: false }]
+  var regex = getRegExp(escapeRegExp(keyword), 'ig')
+  var result = []
+  var lastIndex = 0
+  var match
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      result.push({ text: text.substring(lastIndex, match.index), highlight: false })
+    }
+    result.push({ text: match[0], highlight: true })
+    lastIndex = regex.lastIndex
+  }
+  if (lastIndex < text.length) {
+    result.push({ text: text.substring(lastIndex), highlight: false })
+  }
+  return result.length > 0 ? result : [{ text: text, highlight: false }]
+}
+
+module.exports = { segments: segments }

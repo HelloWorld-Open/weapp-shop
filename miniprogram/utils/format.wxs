@@ -1,0 +1,22 @@
+function fixed2(value) {
+  if (typeof value !== 'number') return '0.00'
+  value = value * 100
+  value = Math.round(value)
+  return (value / 100).toFixed(2)
+}
+
+function price(value) {
+  return '¥' + fixed2(value)
+}
+
+function formatRegion(region) {
+  if (!region) return ''
+  if (typeof region.join === 'function') return region.join(' ')
+  if (typeof region === 'string') return region
+  return '' + region
+}
+
+module.exports = {
+  price: price,
+  formatRegion: formatRegion
+}

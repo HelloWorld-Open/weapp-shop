@@ -1,0 +1,24 @@
+.page { height: 100vh; background: #f5f0eb; display: flex; flex-direction: column }
+.header-tabs { display: flex; background: #fff; padding: 20rpx 30rpx; gap: 20rpx; border-bottom: 1rpx solid #e8e2dc; flex-shrink: 0 }
+.header-tab { flex: 1; text-align: center; padding: 14rpx 0; font-size: 28rpx; color: #6c6c7a; border-radius: 10rpx; transition: all 0.2s }
+.header-tab.active { background: #ff4757; color: #fff; font-weight: 600 }
+.list-wrap { flex: 1; padding: 20rpx }
+
+.coupon-card { display: flex; background: #fff; border-radius: 20rpx; margin-bottom: 20rpx; overflow: hidden; box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.06); animation: fadeIn 0.35s ease both }
+.coupon-card.used, .coupon-card.expired { opacity: 0.6 }
+.coupon-left { width: 200rpx; background: linear-gradient(135deg,#ff4757,#ff6348); padding: 28rpx 16rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; position: relative }
+.coupon-left::after { content: ''; position: absolute; right: -16rpx; top: 50%; transform: translateY(-50%); width: 32rpx; height: 32rpx; border-radius: 50%; background: #f5f0eb }
+.coupon-card.used .coupon-left { background: linear-gradient(135deg,#8a8a8a,#a0a0a0) }
+.coupon-card.expired .coupon-left { background: linear-gradient(135deg,#a4b0be,#b0b8c4) }
+.coupon-value { font-size: 44rpx; font-weight: 800; color: #fff }
+.coupon-condition { font-size: 20rpx; color: rgba(255,255,255,0.85); margin-top: 8rpx }
+.coupon-right { flex: 1; padding: 24rpx 20rpx 24rpx 32rpx; display: flex; flex-direction: column; justify-content: center }
+.coupon-title { font-size: 26rpx; font-weight: 600; color: #1a1a2e }
+.coupon-date { font-size: 22rpx; color: #8a8a8a; margin-top: 8rpx }
+.coupon-actions { margin-top: 12rpx }
+.coupon-btn { display: inline-block; padding: 8rpx 24rpx; border-radius: 24rpx; font-size: 22rpx; font-weight: 500 }
+.use-btn { background: #ff4757; color: #fff }
+.use-btn.hover { transform: scale(0.94) }
+.refunded-badge { background: #f0ece6; color: #2ed573; border: 1rpx solid #2ed573 }
+
+.load-more { text-align: center; padding: 30rpx; color: #6c6c7a; font-size: 24rpx }

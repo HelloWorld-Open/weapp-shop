@@ -1,0 +1,15 @@
+<view class="page fade-in">
+  <scroll-view scroll-y enhanced show-scrollbar="{{false}}" class="list-wrap">
+    <view class="prize-card" wx:for="{{prizes}}" wx:for-index="idx" wx:key="_id" style="animation-delay:{{idx * 0.06}}s">
+      <image class="prize-img" src="{{item.activityImage || 'https://picsum.photos/seed/prize/200/200'}}" mode="aspectFill" />
+      <view class="prize-info">
+        <text class="prize-name">{{item.prizeName}}</text>
+        <text class="prize-time">领取时间：{{item.claimedAtText}}</text>
+        <text class="prize-status">待兑换</text>
+      </view>
+    </view>
+
+    <view class="load-more" wx:if="{{loading}}">加载中...</view>
+    <empty-state text="暂无奖品记录" wx:if="{{!loading && prizes.length === 0}}" />
+  </scroll-view>
+</view>
