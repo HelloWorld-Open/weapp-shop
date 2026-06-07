@@ -1,5 +1,70 @@
 const { cacheGet, cacheSet, cacheClear } = require('./util')
 
+let _fileUrlCache = {}
+
+async function refreshFileIds(data) {
+  if (!data || typeof data !== 'object') return
+
+  const fileIds = []
+  ;(function collect(obj) {
+    if (!obj || typeof obj !== 'object') return
+    if (Array.isArray(obj)) {
+      obj.forEach(item => {
+        if (typeof item === 'string' && item.startsWith('cloud://')) {
+          if (!_fileUrlCache[item]) fileIds.push(item)
+        } else if (typeof item === 'object') {
+          collect(item)
+        }
+      })
+    } else {
+      Object.keys(obj).forEach(key => {
+        const val = obj[key]
+        if (typeof val === 'string' && val.startsWith('cloud://')) {
+          if (!_fileUrlCache[val]) fileIds.push(val)
+        } else if (typeof val === 'object') {
+          collect(val)
+        }
+      })
+    }
+  })(data)
+
+  if (fileIds.length === 0) return
+
+  try {
+    const res = await wx.cloud.getTempFileURL({ fileList: fileIds })
+    if (res && res.fileList) {
+      res.fileList.forEach(item => {
+        if (item.tempFileURL) {
+          _fileUrlCache[item.fileID] = item.tempFileURL
+        }
+      })
+    }
+    ;(function replace(obj) {
+      if (!obj || typeof obj !== 'object') return
+      if (Array.isArray(obj)) {
+        obj.forEach((item, i) => {
+          if (typeof item === 'string' && _fileUrlCache[item]) {
+            obj[i] = _fileUrlCache[item]
+          } else if (typeof item === 'object') {
+            replace(item)
+          }
+        })
+      } else {
+        Object.keys(obj).forEach(key => {
+          const val = obj[key]
+          if (typeof val === 'string' && _fileUrlCache[val]) {
+            obj[key] = _fileUrlCache[val]
+          } else if (typeof val === 'object') {
+            replace(val)
+          }
+        })
+      }
+    })(data)
+  } catch (err) {
+    console.error('[refreshFileIds]', err)
+  }
+}
+
 const PRODUCT_PREFIXES = ['home_', 'product_', 'admin-stats_{"action":"getCategoryStats']
 const BANNER_PREFIXES = ['home_', 'category_{"action":"getBanners']
 const ORDER_PREFIXES = ['admin-stats_{"action":"getOrderTrend']
@@ -28,15 +93,19 @@ function callCloudFunction(name, data = {}) {
     wx.cloud.callFunction({
       name,
       data,
-      success: (res) => {
-        const r = res.result
-        if (r && r.success === false) {
-          wx.showToast({ title: r.message || '操作失败', icon: 'none' })
-          reject(new Error(r.message))
-        } else if (r && r.success === true) {
-          resolve(r.data)
-        } else {
-          resolve(r)
+      success: async (res) => {
+        try {
+          const r = res.result
+          if (r && r.success === false) {
+            wx.showToast({ title: r.message || '操作失败', icon: 'none' })
+            reject(new Error(r.message))
+            return
+          }
+          const resultData = r && r.success === true ? r.data : r
+          await refreshFileIds(resultData)
+          resolve(resultData)
+        } catch (err) {
+          reject(err)
         }
       },
       fail: (err) => {
