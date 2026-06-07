@@ -2,7 +2,9 @@
 
 基于微信小程序·云开发的全栈商城项目，包含用户端（购物、下单、评价、活动等）和管理后台（数据看板、商品管理、订单管理等）。
 
-![项目演示](assets/demo/demo.gif)
+<p align="center">
+  <img src="assets/demo/demo.gif" alt="项目演示" width="700">
+</p>
 
 ---
 
